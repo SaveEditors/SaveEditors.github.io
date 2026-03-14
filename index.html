@@ -484,6 +484,30 @@
       text-align:center;
       animation:bubbleFloat .88s ease-in-out infinite;
     }
+    .duck-wrap.is-sleeping .duck{
+      animation:none;
+      transform:translateY(0) rotate(7deg);
+    }
+    .duck-wrap.is-sleeping .bubble{
+      opacity:0;
+      visibility:hidden;
+    }
+    .sleep-z{
+      position:relative;
+      margin-bottom:92px;
+      margin-left:-4px;
+      font-weight:900;
+      font-size:1rem;
+      color:#eef5ff;
+      text-shadow:0 2px 4px rgba(10,17,29,.45);
+      opacity:0;
+      visibility:hidden;
+      pointer-events:none;
+    }
+    .sleep-z.is-active{
+      visibility:visible;
+      animation:sleepZ 1.4s ease-in-out infinite;
+    }
     .bubble:after{
       content:"";
       position:absolute;
@@ -502,6 +526,12 @@
     @keyframes bubbleFloat{
       0%,100%{transform:translateY(0)}
       50%{transform:translateY(-1px)}
+    }
+    @keyframes sleepZ{
+      0%{opacity:0;transform:translateY(6px) scale(.86)}
+      25%{opacity:1}
+      70%{opacity:1}
+      100%{opacity:0;transform:translateY(-26px) scale(1.08)}
     }
     @keyframes cloudDrift{
       from{transform:translateX(0)}
@@ -587,6 +617,7 @@
       <div class="duck-wrap">
         <img class="duck" src="https://files.kick.com/emotes/4147914/fullsize" alt="">
         <div id="duckBubble" class="bubble">welcome to my Profile</div>
+        <div id="duckSleepZ" class="sleep-z">Z</div>
       </div>
     </div>
     <div class="grass"></div>
@@ -673,7 +704,12 @@
         list.innerHTML = "<li>Could not load editor list yet.</li>";
       }
     }
+    const DAY_NIGHT_CYCLE_MS = 20000;
+    const NIGHT_START_PHASE = 0.5;
+    const NIGHT_END_PHASE = 0.9;
+    const cycleStartMs = performance.now();
     let duckAnimation = null;
+    let duckIsSleeping = false;
 
     function startDuckWalk() {
       const lane = document.querySelector(".duck-lane");
@@ -708,6 +744,36 @@
         iterations: Infinity,
         easing: "steps(160,end)"
       });
+      if (duckIsSleeping && duckAnimation) {
+        duckAnimation.pause();
+      }
+    }
+
+    function setDuckSleeping(sleeping) {
+      const wrap = document.querySelector(".duck-wrap");
+      const sleepZ = document.getElementById("duckSleepZ");
+      if (!wrap || !sleepZ) return;
+      if (duckIsSleeping === sleeping) return;
+      duckIsSleeping = sleeping;
+      wrap.classList.toggle("is-sleeping", sleeping);
+      sleepZ.classList.toggle("is-active", sleeping);
+      if (duckAnimation) {
+        if (sleeping) {
+          duckAnimation.pause();
+        } else {
+          duckAnimation.play();
+        }
+      }
+    }
+
+    function startDuckSleepCycleWatcher() {
+      const tick = () => {
+        const phase = ((performance.now() - cycleStartMs) % DAY_NIGHT_CYCLE_MS) / DAY_NIGHT_CYCLE_MS;
+        const isNight = phase >= NIGHT_START_PHASE && phase <= NIGHT_END_PHASE;
+        setDuckSleeping(isNight);
+      };
+      tick();
+      setInterval(tick, 250);
     }
 
     function startDuckBubbleMessages() {
@@ -731,6 +797,7 @@
     loadEditors();
     startDuckWalk();
     startDuckBubbleMessages();
+    startDuckSleepCycleWatcher();
     window.addEventListener("resize", startDuckWalk);
   </script>
 </body>
