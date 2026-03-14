@@ -5,7 +5,13 @@
     "repo": "https://github.com/SaveEditors/planet-of-lana-2-save-editor",
     "play": "https://saveeditors.github.io/planet-of-lana-2-save-editor/",
     "summary": "Story progression, journal GUID control, Mui bond flags, coordinates, and runtime settings in one clean editor.",
-    "tags": ["Steam", "Game Pass", "Story Progress", "Journal", "Settings"]
+    "tags": [
+      "Steam",
+      "Game Pass",
+      "Story Progress",
+      "Journal",
+      "Settings"
+    ]
   },
   {
     "name": "TMNT Shredder's Revenge - Save Editor",
@@ -13,6 +19,25 @@
     "repo": "https://github.com/SaveEditors/tmnt-sf-save-editor",
     "play": "https://saveeditors.github.io/tmnt-sf-save-editor/",
     "summary": "Shredder's Revenge save decode/edit/re-encode with auto-detect, symbol name mapping, and backup-protected risky ID controls.",
-    "tags": ["TMNT", "Shredder's Revenge", "Cloud Save", "Backup Safety"]
+    "tags": [
+      "TMNT",
+      "Shredder's Revenge",
+      "Cloud Save",
+      "Backup Safety"
+    ]
+  },
+  {
+    "name": "Swordhaven - Save Editor",
+    "slug": "swordhaven-save-editor",
+    "repo": "https://github.com/SaveEditors/swordhaven-save-editor",
+    "play": "https://saveeditors.github.io/swordhaven-save-editor/",
+    "summary": "Edit Swordhaven save archives and Progress data with structured controls, inventory operations, and map-state tools.",
+    "tags": [
+      "Swordhaven",
+      "Unity",
+      "Archive",
+      "Progress",
+      "Fog of War"
+    ]
   }
 ]
