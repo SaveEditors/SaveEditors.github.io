@@ -14,5 +14,13 @@
     "play": "https://saveeditors.github.io/tmnt-sf-save-editor/",
     "summary": "Cloud save decode/edit/re-encode with auto-detect, symbol name mapping, and backup-protected risky ID controls.",
     "tags": ["TMNT", "Roguelike", "Cloud Save", "Backup Safety"]
+  },
+  {
+    "name": "TMNT Shredder's Revenge - Save Editor",
+    "slug": "tmnt-shredders-revenge-save-editor",
+    "repo": "https://github.com/SaveEditors/tmnt-shredders-revenge-save-editor",
+    "play": "https://saveeditors.github.io/tmnt-shredders-revenge-save-editor/",
+    "summary": "Starter scaffold for Shredder's Revenge save editing with SaveEditors release and Pages pipeline ready.",
+    "tags": ["TMNT", "Shredder's Revenge", "Scaffold", "Save Editor"]
   }
 ]
