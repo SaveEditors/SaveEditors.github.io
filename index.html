@@ -115,17 +115,6 @@
       font-size:.84rem;
       white-space:nowrap;
     }
-    .repo-pending{
-      margin-left:6px;
-      color:#7b4d20;
-      font-size:.8rem;
-      font-weight:600;
-      background:rgba(238,194,126,.26);
-      border:1px solid rgba(177,126,54,.38);
-      border-radius:999px;
-      padding:2px 8px;
-      white-space:nowrap;
-    }
     a{
       color:var(--link);
       text-decoration:none;
@@ -361,16 +350,6 @@
       }
     }
 
-    async function resolvePlayTarget(playUrl, repoUrl) {
-      if (!playUrl && repoUrl) return { href: repoUrl, webReady: false };
-      if (!playUrl) return { href: "#", webReady: false };
-      try {
-        const res = await fetch(playUrl, { method: "HEAD", cache: "no-store" });
-        if (res.ok) return { href: playUrl, webReady: true };
-      } catch {}
-      return { href: repoUrl || playUrl, webReady: false };
-    }
-
     async function loadEditors() {
       const list = document.getElementById("editorList");
       const quickLinks = document.getElementById("quickLinks");
@@ -386,28 +365,23 @@
         const hydrated = await Promise.all(editors.map(async (editor) => {
           const repo = editor.repo || "";
           const play = editor.play || "";
-          const [updated, target] = await Promise.all([
-            fetchLastUpdatedDate(repo),
-            resolvePlayTarget(play, repo)
-          ]);
+          const updated = await fetchLastUpdatedDate(repo);
           return {
             name: editor.name || editor.slug || "Unnamed Editor",
             repo,
-            targetHref: target.href || "#",
-            webReady: target.webReady,
+            play,
             updated: updated || "Unknown"
           };
         }));
 
         if (quickLinks) {
           quickLinks.innerHTML = hydrated.map((e) => (
-            `<a class="quick-chip" href="${htmlEscape(e.targetHref)}" target="_blank" rel="noopener noreferrer">${htmlEscape(e.name)}</a>`
+            `<a class="quick-chip" href="${htmlEscape(e.play || e.repo || '#')}" target="_blank" rel="noopener noreferrer">${htmlEscape(e.name)}</a>`
           )).join("");
         }
 
         list.innerHTML = hydrated.map((e) => {
-          const pending = e.webReady ? "" : ' <span class="repo-pending">web pending</span>';
-          return `<li><a href="${htmlEscape(e.targetHref)}" target="_blank" rel="noopener noreferrer">${htmlEscape(e.name)}</a> · <a href="${htmlEscape(e.repo)}" target="_blank" rel="noopener noreferrer">repo</a><span class="repo-meta">Last Updated: ${htmlEscape(e.updated)}</span>${pending}</li>`;
+          return `<li><a href="${htmlEscape(e.play || e.repo || '#')}" target="_blank" rel="noopener noreferrer">${htmlEscape(e.name)}</a> · <a href="${htmlEscape(e.repo)}" target="_blank" rel="noopener noreferrer">repo</a><span class="repo-meta">Last Updated: ${htmlEscape(e.updated)}</span></li>`;
         }).join("");
       } catch {
         if (quickLinks) quickLinks.innerHTML = '<span class="quick-chip ghost">Could not load editor links yet.</span>';
