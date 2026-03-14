@@ -148,6 +148,14 @@ a:hover { text-decoration: underline; }
   gap: 8px;
   align-items: center;
 }
+.input-help {
+  display: grid;
+  gap: 4px;
+  margin-top: -4px;
+}
+.input-help p {
+  margin: 0;
+}
 .status-pill {
   border: 1px solid var(--line);
   border-radius: 999px;
