@@ -6,5 +6,13 @@
     "play": "https://saveeditors.github.io/planet-of-lana-2-save-editor/",
     "summary": "Story progression, journal GUID control, Mui bond flags, coordinates, and runtime settings in one clean editor.",
     "tags": ["Steam", "Game Pass", "Story Progress", "Journal", "Settings"]
+  },
+  {
+    "name": "TMNT Splinter's Fate - Save Editor",
+    "slug": "tmnt-sf-save-editor",
+    "repo": "https://github.com/SaveEditors/tmnt-sf-save-editor",
+    "play": "https://saveeditors.github.io/tmnt-sf-save-editor/",
+    "summary": "Cloud save decode/edit/re-encode with auto-detect, symbol name mapping, and backup-protected risky ID controls.",
+    "tags": ["TMNT", "Roguelike", "Cloud Save", "Backup Safety"]
   }
 ]
