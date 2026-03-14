@@ -60,6 +60,38 @@
       color:var(--soft);
       line-height:1.55;
     }
+    .site-nav{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin:0 0 14px;
+    }
+    .site-nav a{
+      display:inline-flex;
+      align-items:center;
+      border:1px solid #b7d1e7;
+      border-radius:999px;
+      padding:7px 12px;
+      background:rgba(255,255,255,.86);
+      color:#244b74;
+      font-size:.86rem;
+      font-weight:700;
+      text-decoration:none;
+      border-bottom:none;
+      box-shadow:0 3px 8px rgba(50,74,97,.12);
+      transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease;
+    }
+    .site-nav a:hover{
+      transform:translateY(-1px);
+      border-color:#7faacf;
+      box-shadow:0 5px 14px rgba(50,74,97,.18);
+      border-bottom:none;
+    }
+    .site-nav a.kofi{
+      border-color:#9e7d2f;
+      color:#513e16;
+      background:linear-gradient(180deg,#ffe8ad,#ffd67a);
+    }
     .quick-links{
       margin:16px 0 0;
       display:flex;
@@ -223,12 +255,12 @@
     }
     .duck-wrap{
       position:absolute;
-      left:-120px;
+      left:0;
       bottom:0;
       display:flex;
       align-items:flex-end;
       gap:10px;
-      animation:duckWalk 16s linear infinite;
+      will-change:transform;
     }
     .duck{
       width:72px;
@@ -236,6 +268,7 @@
       object-fit:contain;
       image-rendering:auto;
       filter:drop-shadow(0 4px 4px rgba(0,0,0,.18));
+      animation:duckBob .42s ease-in-out infinite;
     }
     .bubble{
       position:relative;
@@ -262,9 +295,9 @@
       background:#fff;
       transform:rotate(45deg);
     }
-    @keyframes duckWalk{
-      from{transform:translateX(0)}
-      to{transform:translateX(calc(100vw + 160px))}
+    @keyframes duckBob{
+      0%,100%{transform:translateY(0)}
+      50%{transform:translateY(-2px)}
     }
     @keyframes cloudDrift{
       from{transform:translateX(0)}
@@ -279,6 +312,11 @@
 <body>
   <main class="page">
     <section class="sheet">
+      <nav class="site-nav" aria-label="Site Links">
+        <a href="https://github.com/SaveEditors/SaveEditors.github.io" target="_blank" rel="noopener noreferrer">Homepage Repo</a>
+        <a href="https://github.com/SaveEditors" target="_blank" rel="noopener noreferrer">GitHub Org</a>
+        <a class="kofi" href="https://ko-fi.com/saveeditors" target="_blank" rel="noopener noreferrer">Buy Me A Coffee</a>
+      </nav>
       <h1>SaveEditors</h1>
       <p class="lead">Welcome to my profile. This is a collection of save editors I've made. Primarily tested with the Windows Xbox Game Pass versions.</p>
       <div id="quickLinks" class="quick-links">
@@ -388,6 +426,43 @@
         list.innerHTML = "<li>Could not load editor list yet.</li>";
       }
     }
+    let duckAnimation = null;
+
+    function startDuckWalk() {
+      const lane = document.querySelector(".duck-lane");
+      const wrap = document.querySelector(".duck-wrap");
+      if (!lane || !wrap || typeof wrap.animate !== "function") return;
+
+      const laneWidth = Math.max(window.innerWidth || 0, lane.clientWidth || 0, 360);
+      const margin = 90;
+      const points = 9 + Math.floor(Math.random() * 5);
+      let x = Math.floor(Math.random() * Math.max(1, laneWidth - 120));
+      let previousX = x;
+      const keyframes = [];
+
+      for (let i = 0; i < points; i += 1) {
+        if (i > 0) {
+          const stride = Math.round((Math.random() * 2 - 1) * 280);
+          x = Math.max(-margin, Math.min(laneWidth - margin, x + stride));
+        }
+        const y = Math.round((Math.random() * 2 - 1) * 8);
+        const facing = x >= previousX ? 1 : -1;
+        keyframes.push({
+          offset: points === 1 ? 1 : i / (points - 1),
+          transform: `translate(${Math.round(x)}px, ${y}px) scaleX(${facing})`
+        });
+        previousX = x;
+      }
+
+      const duration = 18000 + Math.floor(Math.random() * 12000);
+      if (duckAnimation) duckAnimation.cancel();
+      duckAnimation = wrap.animate(keyframes, {
+        duration,
+        iterations: Infinity,
+        easing: "linear"
+      });
+    }
+
     function startDuckBubbleMessages() {
       const bubble = document.getElementById("duckBubble");
       if (!bubble) return;
@@ -407,7 +482,9 @@
       }, 6000);
     }
     loadEditors();
+    startDuckWalk();
     startDuckBubbleMessages();
+    window.addEventListener("resize", startDuckWalk);
   </script>
 </body>
 </html>
