@@ -249,7 +249,7 @@
       left:0;
       right:0;
       top:0;
-      height:50vh;
+      height:56vh;
       pointer-events:none;
       z-index:1;
       overflow:hidden;
@@ -284,16 +284,16 @@
         42px -3px 0 2px rgba(255,255,255,.82),
         58px 2px 0 0 rgba(255,255,255,.72);
       filter:drop-shadow(0 2px 3px rgba(80,117,145,.2));
-      animation:cloudDrift 30s linear infinite;
+      animation:cloudSway 18s ease-in-out infinite;
     }
-    .cloud-a{left:-120px;top:7%;width:72px;animation-duration:34s}
-    .cloud-b{left:8%;top:20%;width:84px;animation-duration:44s;animation-delay:-14s}
-    .cloud-c{left:22%;top:9%;width:66px;animation-duration:38s;animation-delay:-26s}
-    .cloud-d{left:42%;top:17%;width:78px;animation-duration:40s;animation-delay:-7s}
-    .cloud-e{left:57%;top:6%;width:88px;animation-duration:36s;animation-delay:-20s}
-    .cloud-f{left:72%;top:22%;width:70px;animation-duration:46s;animation-delay:-30s}
-    .cloud-g{left:84%;top:11%;width:82px;animation-duration:42s;animation-delay:-17s}
-    .cloud-h{left:94%;top:4%;width:62px;animation-duration:39s;animation-delay:-9s}
+    .cloud-a{left:-130px;top:12%;width:72px;animation-duration:34s}
+    .cloud-b{left:6%;top:34%;width:84px;animation-duration:45s;animation-delay:-16s}
+    .cloud-c{left:20%;top:18%;width:66px;animation-duration:39s;animation-delay:-25s}
+    .cloud-d{left:34%;top:42%;width:78px;animation-duration:41s;animation-delay:-8s}
+    .cloud-e{left:49%;top:24%;width:88px;animation-duration:36s;animation-delay:-19s}
+    .cloud-f{left:63%;top:38%;width:70px;animation-duration:47s;animation-delay:-31s}
+    .cloud-g{left:78%;top:16%;width:82px;animation-duration:43s;animation-delay:-15s}
+    .cloud-h{left:92%;top:30%;width:62px;animation-duration:40s;animation-delay:-10s}
     .world-decor{
       position:absolute;
       left:0;
@@ -352,6 +352,69 @@
     }
     .tree-a{left:32%}
     .tree-b{left:62%;transform:scale(.95)}
+    .duck-wrap{
+      position:absolute;
+      left:18%;
+      bottom:6px;
+      width:74px;
+      height:34px;
+    }
+    .duck{
+      position:absolute;
+      left:0;
+      bottom:0;
+      width:46px;
+      height:24px;
+      border-radius:13px 16px 11px 12px;
+      background:linear-gradient(180deg,#ffe58e 0%,#f7c855 72%,#e2ac3f 100%);
+      box-shadow:0 2px 0 rgba(155,112,35,.38);
+    }
+    .duck:before{
+      content:"";
+      position:absolute;
+      left:30px;
+      bottom:11px;
+      width:18px;
+      height:16px;
+      border-radius:50%;
+      background:linear-gradient(180deg,#ffe58e 0%,#f5c250 80%,#deaa3f 100%);
+      box-shadow:inset -2px 0 0 rgba(168,120,35,.2);
+    }
+    .duck:after{
+      content:"";
+      position:absolute;
+      left:45px;
+      bottom:14px;
+      width:10px;
+      height:6px;
+      border-radius:5px 3px 4px 3px;
+      background:#f09b3d;
+      box-shadow:0 8px 0 -2px rgba(214,129,47,.9);
+    }
+    .duck-eye{
+      position:absolute;
+      left:41px;
+      bottom:20px;
+      width:3px;
+      height:3px;
+      border-radius:50%;
+      background:#232323;
+    }
+    .duck-note{
+      position:absolute;
+      left:44px;
+      bottom:22px;
+      padding:4px 8px;
+      border-radius:10px;
+      border:1px solid rgba(39,56,74,.28);
+      background:rgba(255,255,255,.92);
+      color:#2a3c50;
+      font-size:.72rem;
+      font-weight:700;
+      letter-spacing:.02em;
+      white-space:nowrap;
+      box-shadow:0 2px 6px rgba(39,56,74,.18);
+    }
     .grass{
       position:absolute;
       left:0;
@@ -408,9 +471,10 @@
       border-top:1px solid rgba(56,63,72,.4);
       box-shadow:inset 0 6px 10px rgba(255,255,255,.18);
     }
-    @keyframes cloudDrift{
-      from{transform:translateX(0)}
-      to{transform:translateX(calc(100vw + 220px))}
+    @keyframes cloudSway{
+      0%{transform:translateX(0) translateY(0)}
+      50%{transform:translateX(38px) translateY(-4px)}
+      100%{transform:translateX(-18px) translateY(2px)}
     }
     @keyframes nightTintCycle{
       0%,42%,100%{opacity:0}
@@ -475,6 +539,11 @@
   <div class="scene" aria-hidden="true">
     <div class="world-decor">
       <span class="bush bush-a"></span>
+      <span class="duck-wrap">
+        <span class="duck"></span>
+        <span class="duck-eye"></span>
+        <span class="duck-note">Duck says: save early.</span>
+      </span>
       <span class="tree tree-a"></span>
       <span class="bush bush-b"></span>
       <span class="tree tree-b"></span>
