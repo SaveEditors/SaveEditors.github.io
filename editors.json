@@ -15,10 +15,10 @@
   },
   {
     "name": "TMNT Shredder's Revenge - Save Editor",
-    "slug": "tmnt-sf-save-editor",
-    "repo": "https://github.com/SaveEditors/tmnt-sf-save-editor",
-    "play": "https://saveeditors.github.io/tmnt-sf-save-editor/",
-    "summary": "Shredder's Revenge save decode/edit/re-encode with auto-detect, symbol name mapping, and backup-protected risky ID controls.",
+    "slug": "tmnt-shredders-revenge-save-editor",
+    "repo": "https://github.com/SaveEditors/tmnt-shredders-revenge-save-editor",
+    "play": "https://saveeditors.github.io/tmnt-shredders-revenge-save-editor/",
+    "summary": "Edit TMNT cloud save files with auto-detect, backup-first writes, and readable upgrade names.",
     "tags": [
       "TMNT",
       "Shredder's Revenge",
