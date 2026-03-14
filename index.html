@@ -73,12 +73,13 @@
       padding:0 16px 170px;
     }
     .sheet{
-      border:1px solid var(--line);
+      border:1px solid #2a3949;
       border-radius:16px;
-      background:var(--panel);
+      background:linear-gradient(180deg,#0e141d,#111925);
       backdrop-filter:blur(4px);
-      box-shadow:0 16px 36px rgba(30,40,54,.08);
+      box-shadow:0 16px 36px rgba(10,14,20,.42);
       padding:22px 24px;
+      color:#eaf2fb;
     }
     h1{
       margin:0 0 10px;
@@ -87,7 +88,7 @@
     }
     .lead{
       margin:0;
-      color:var(--soft);
+      color:#a9bacd;
       line-height:1.55;
     }
     .site-nav{
@@ -183,7 +184,7 @@
       font-size:1.08rem;
       letter-spacing:.04em;
       text-transform:uppercase;
-      color:#2d3540;
+      color:#d4dfeb;
     }
     ul{
       margin:0;
@@ -195,7 +196,7 @@
     }
     .repo-meta{
       margin-left:8px;
-      color:#5a6977;
+      color:#97a7ba;
       font-size:.84rem;
       white-space:nowrap;
     }
@@ -206,6 +207,13 @@
     }
     a:hover{
       border-bottom-color:rgba(35,79,123,.85);
+    }
+    .sheet a{
+      color:#8ec2ff;
+      border-bottom-color:rgba(142,194,255,.34);
+    }
+    .sheet a:hover{
+      border-bottom-color:rgba(142,194,255,.75);
     }
     .scene{
       position:fixed;

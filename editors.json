@@ -1,5 +1,19 @@
 [
   {
+    "name": "Minecraft Dungeons - Save Editor",
+    "slug": "mcd-save-editor",
+    "repo": "https://github.com/CutFlame/MCDSaveEdit",
+    "play": "https://saveeditors.github.io/mcd-save-editor/",
+    "summary": "Browser-based Minecraft Dungeons save editor with .dat decrypt/encrypt compatibility, inventory/chest/stat editing, and raw JSON control.",
+    "tags": [
+      "Minecraft Dungeons",
+      "Save Editor",
+      "Browser",
+      ".dat",
+      ".json"
+    ]
+  },
+  {
     "name": "Planet of Lana 2 - Save Editor",
     "slug": "planet-of-lana-2-save-editor",
     "repo": "https://github.com/SaveEditors/planet-of-lana-2-save-editor",
@@ -29,7 +43,7 @@
   {
     "name": "Swordhaven - Save Editor",
     "slug": "swordhaven-save-editor",
-    "repo": "https://github.com/SaveEditors/swordhaven-save-editor",
+    "repo": "https://github.com/SaveEditors/SaveEditors.github.io/tree/main/swordhaven-save-editor",
     "play": "https://saveeditors.github.io/swordhaven-save-editor/",
     "summary": "Edit Swordhaven save archives and Progress data with structured controls, inventory operations, and map-state tools.",
     "tags": [
