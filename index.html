@@ -216,6 +216,51 @@
       font-size:.84rem;
       white-space:nowrap;
     }
+    .request-cta{
+      margin-top:14px;
+      padding:12px 14px;
+      border:1px solid #6aa7d9;
+      border-radius:12px;
+      background:
+        radial-gradient(140px 56px at 12% 0%, rgba(114,194,255,.24), transparent 74%),
+        linear-gradient(180deg, rgba(255,255,255,.04), rgba(0,0,0,.1));
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.16), 0 10px 20px rgba(6,20,39,.22);
+    }
+    .request-cta-label{
+      display:block;
+      margin-bottom:6px;
+      color:#d0e6ff;
+      font-size:.78rem;
+      letter-spacing:.07em;
+      text-transform:uppercase;
+      font-weight:700;
+    }
+    .request-cta-link{
+      display:inline-flex;
+      align-items:center;
+      gap:7px;
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid #9ec9f1;
+      background:rgba(255,255,255,.92);
+      color:#0f3557 !important;
+      font-weight:800;
+      text-decoration:none;
+      border-bottom:none !important;
+      box-shadow:0 4px 10px rgba(8,33,56,.16);
+    }
+    .request-cta-link:hover{
+      transform:translateY(-1px);
+      border-color:#b8dcff;
+      color:#0f3557 !important;
+      border-bottom:none !important;
+    }
+    .request-cta-note{
+      margin:8px 0 0;
+      color:#c5d7ea;
+      font-size:.86rem;
+      line-height:1.4;
+    }
     a{
       color:var(--link);
       text-decoration:none;
@@ -537,6 +582,13 @@
       <ul id="editorList">
         <li>Loading editors...</li>
       </ul>
+      <div class="request-cta">
+        <span class="request-cta-label">Need another save editor?</span>
+        <a class="request-cta-link" href="https://whispermeter.com/message-box/15b6ac70-9113-4e9c-b629-423f335c7e07" target="_blank" rel="noopener noreferrer">
+          Submit a Save Editor Request
+        </a>
+        <p class="request-cta-note">Drop the game name, platform, and save-file type so we can queue it faster.</p>
+      </div>
     </section>
   </main>
 
