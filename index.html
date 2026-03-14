@@ -6,6 +6,7 @@
   <title>SaveEditors</title>
   <style>
     :root{
+      --day-night-cycle:35s;
       --bg:#bfe7ff;
       --sky-top:#def3ff;
       --sky-bottom:#b7e2ff;
@@ -42,32 +43,45 @@
       position:fixed;
       inset:0;
       pointer-events:none;
-      z-index:1;
+      z-index:0;
       opacity:0;
       background:linear-gradient(180deg,rgba(12,24,52,.76),rgba(8,14,30,.9));
-      animation:nightTintCycle 20s linear infinite;
+      animation:nightTintCycle var(--day-night-cycle) linear infinite;
     }
     body:after{
       content:"";
       position:fixed;
       inset:0;
       pointer-events:none;
-      z-index:1;
+      z-index:0;
       opacity:0;
       background:
-        radial-gradient(circle at 9% 14%, rgba(255,255,255,.95) 0 1px, transparent 2px),
-        radial-gradient(circle at 18% 22%, rgba(255,255,255,.9) 0 1px, transparent 2px),
-        radial-gradient(circle at 27% 10%, rgba(255,255,255,.86) 0 1px, transparent 2px),
-        radial-gradient(circle at 42% 18%, rgba(255,255,255,.92) 0 1px, transparent 2px),
-        radial-gradient(circle at 58% 11%, rgba(255,255,255,.88) 0 1px, transparent 2px),
-        radial-gradient(circle at 64% 24%, rgba(255,255,255,.86) 0 1px, transparent 2px),
-        radial-gradient(circle at 78% 13%, rgba(255,255,255,.92) 0 1px, transparent 2px),
-        radial-gradient(circle at 89% 22%, rgba(255,255,255,.9) 0 1px, transparent 2px);
-      animation:nightStarsCycle 20s linear infinite;
+        radial-gradient(circle at 6% 14%, rgba(255,255,255,.95) 0 1px, transparent 2px),
+        radial-gradient(circle at 10% 31%, rgba(255,255,255,.92) 0 1px, transparent 2px),
+        radial-gradient(circle at 14% 22%, rgba(255,255,255,.9) 0 1px, transparent 2px),
+        radial-gradient(circle at 18% 8%, rgba(255,255,255,.88) 0 1px, transparent 2px),
+        radial-gradient(circle at 23% 17%, rgba(255,255,255,.94) 0 1px, transparent 2px),
+        radial-gradient(circle at 28% 27%, rgba(255,255,255,.9) 0 1px, transparent 2px),
+        radial-gradient(circle at 33% 11%, rgba(255,255,255,.92) 0 1px, transparent 2px),
+        radial-gradient(circle at 39% 24%, rgba(255,255,255,.86) 0 1px, transparent 2px),
+        radial-gradient(circle at 44% 6%, rgba(255,255,255,.9) 0 1px, transparent 2px),
+        radial-gradient(circle at 50% 16%, rgba(255,255,255,.95) 0 1px, transparent 2px),
+        radial-gradient(circle at 56% 28%, rgba(255,255,255,.9) 0 1px, transparent 2px),
+        radial-gradient(circle at 61% 10%, rgba(255,255,255,.92) 0 1px, transparent 2px),
+        radial-gradient(circle at 67% 19%, rgba(255,255,255,.88) 0 1px, transparent 2px),
+        radial-gradient(circle at 72% 8%, rgba(255,255,255,.9) 0 1px, transparent 2px),
+        radial-gradient(circle at 76% 24%, rgba(255,255,255,.96) 0 1px, transparent 2px),
+        radial-gradient(circle at 82% 13%, rgba(255,255,255,.9) 0 1px, transparent 2px),
+        radial-gradient(circle at 87% 29%, rgba(255,255,255,.88) 0 1px, transparent 2px),
+        radial-gradient(circle at 92% 9%, rgba(255,255,255,.92) 0 1px, transparent 2px),
+        radial-gradient(circle at 96% 22%, rgba(255,255,255,.9) 0 1px, transparent 2px);
+      animation:
+        nightStarsCycle var(--day-night-cycle) linear infinite,
+        starTwinkle 7s ease-in-out infinite;
     }
     .page{
       position:relative;
-      z-index:2;
+      z-index:3;
       max-width:920px;
       margin:34px auto 0;
       padding:0 16px 170px;
@@ -103,8 +117,8 @@
       border:1px solid #b7d1e7;
       border-radius:999px;
       padding:7px 12px;
-      background:rgba(255,255,255,.86);
-      color:#244b74;
+      background:#ffffff;
+      color:#000000;
       font-size:.86rem;
       font-weight:700;
       text-decoration:none;
@@ -118,10 +132,11 @@
       box-shadow:0 5px 14px rgba(50,74,97,.18);
       border-bottom:none;
     }
-    .site-nav a.kofi{
-      border-color:#9e7d2f;
-      color:#513e16;
-      background:linear-gradient(180deg,#ffe8ad,#ffd67a);
+    .site-nav a.org-link svg{
+      width:14px;
+      height:14px;
+      flex:0 0 auto;
+      fill:currentColor;
     }
     .quick-links{
       margin:16px 0 0;
@@ -139,10 +154,10 @@
       border:1px solid #b7d1e7;
       border-radius:999px;
       padding:7px 12px;
-      background:rgba(255,255,255,.86);
+      background:#ffffff;
       box-shadow:0 3px 8px rgba(50,74,97,.12);
       text-decoration:none;
-      color:#244b74;
+      color:#000000;
       border-bottom:none;
       transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease;
     }
@@ -153,7 +168,7 @@
       border-bottom:none;
     }
     .quick-chip.ghost{
-      color:#637486;
+      color:#000000;
       background:#edf3f8;
       border-color:#d6e1ec;
     }
@@ -161,7 +176,7 @@
       position:fixed;
       right:16px;
       top:16px;
-      z-index:80;
+      z-index:10;
       display:inline-flex;
       align-items:center;
       justify-content:center;
@@ -169,15 +184,16 @@
       border-radius:999px;
       border:1px solid #9e7d2f;
       background:linear-gradient(180deg,#ffe8ad,#ffd67a);
-      color:#513e16;
-      font-weight:700;
+      color:#2b210b !important;
+      font-weight:800;
       text-decoration:none;
-      border-bottom:none;
+      border-bottom:none !important;
       box-shadow:0 8px 18px rgba(50,74,97,.24);
     }
     .kofi-widget:hover{
       transform:translateY(-1px);
-      border-bottom:none;
+      color:#2b210b !important;
+      border-bottom:none !important;
     }
     h2{
       margin:24px 0 10px;
@@ -216,15 +232,27 @@
       color:#d1e7ff;
       border-bottom-color:rgba(142,194,255,.75);
     }
-    .site-nav a,
-    .quick-chip{
-      color:#244b74;
+    .sheet .site-nav a,
+    .sheet .site-nav a:visited,
+    .sheet .quick-chip,
+    .sheet .quick-chip:visited{
+      color:#000000 !important;
       border-bottom:none;
     }
-    .site-nav a:hover,
-    .quick-chip:hover{
-      color:#163754;
+    .sheet .site-nav a:hover,
+    .sheet .quick-chip:hover{
+      color:#000000 !important;
       border-bottom:none;
+    }
+    .sky-clouds{
+      position:fixed;
+      left:0;
+      right:0;
+      top:0;
+      height:50vh;
+      pointer-events:none;
+      z-index:1;
+      overflow:hidden;
     }
     .scene{
       position:fixed;
@@ -233,16 +261,17 @@
       bottom:0;
       height:148px;
       pointer-events:none;
-      z-index:30;
+      z-index:1;
     }
     .clouds{
       position:absolute;
       left:0;
       right:0;
-      bottom:74px;
-      height:44px;
+      top:0;
+      bottom:0;
+      height:auto;
       overflow:hidden;
-      opacity:.95;
+      opacity:.9;
     }
     .cloud{
       position:absolute;
@@ -257,76 +286,14 @@
       filter:drop-shadow(0 2px 3px rgba(80,117,145,.2));
       animation:cloudDrift 30s linear infinite;
     }
-    .cloud-a{left:-120px;top:8px;width:72px;animation-duration:34s}
-    .cloud-b{left:38%;top:2px;width:84px;animation-duration:44s;animation-delay:-14s}
-    .cloud-c{left:72%;top:11px;width:66px;animation-duration:38s;animation-delay:-26s}
-    .night-effects{
-      position:fixed;
-      inset:0;
-      pointer-events:none;
-      z-index:4;
-    }
-    .shooting-star{
-      position:absolute;
-      width:3px;
-      height:3px;
-      border-radius:50%;
-      background:rgba(255,255,255,.98);
-      opacity:0;
-      filter:drop-shadow(0 0 6px rgba(255,255,255,.9));
-      animation:nightObjectCycle 20s linear infinite,shootingStar 4.2s linear infinite;
-    }
-    .shooting-star:after{
-      content:"";
-      position:absolute;
-      top:1px;
-      left:-70px;
-      width:72px;
-      height:2px;
-      background:linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,.7),rgba(255,255,255,0));
-      transform:rotate(-20deg);
-      transform-origin:right center;
-    }
-    .shooting-a{top:16%;left:14%;animation-delay:0s,0s}
-    .shooting-b{top:28%;left:68%;animation-delay:0s,1.7s}
-    .air-traffic{
-      position:fixed;
-      inset:0;
-      pointer-events:none;
-      z-index:4;
-    }
-    .plane{
-      position:absolute;
-      left:-170px;
-      width:96px;
-      height:16px;
-      opacity:0;
-      animation:nightObjectCycle 20s linear infinite,planeFly 11s linear infinite;
-    }
-    .plane:before{
-      content:"";
-      position:absolute;
-      left:0;
-      top:7px;
-      width:56px;
-      height:4px;
-      border-radius:999px;
-      background:#d9e2eb;
-      box-shadow:8px -6px 0 -2px #e9f0f6;
-    }
-    .plane:after{
-      content:"";
-      position:absolute;
-      left:44px;
-      top:4px;
-      width:18px;
-      height:8px;
-      border-radius:2px;
-      background:#b6c4d2;
-      clip-path:polygon(0 50%,100% 0,100% 100%);
-    }
-    .plane-a{top:18%;animation-delay:0s,0s}
-    .plane-b{top:31%;animation-delay:0s,4.2s}
+    .cloud-a{left:-120px;top:7%;width:72px;animation-duration:34s}
+    .cloud-b{left:8%;top:20%;width:84px;animation-duration:44s;animation-delay:-14s}
+    .cloud-c{left:22%;top:9%;width:66px;animation-duration:38s;animation-delay:-26s}
+    .cloud-d{left:42%;top:17%;width:78px;animation-duration:40s;animation-delay:-7s}
+    .cloud-e{left:57%;top:6%;width:88px;animation-duration:36s;animation-delay:-20s}
+    .cloud-f{left:72%;top:22%;width:70px;animation-duration:46s;animation-delay:-30s}
+    .cloud-g{left:84%;top:11%;width:82px;animation-duration:42s;animation-delay:-17s}
+    .cloud-h{left:94%;top:4%;width:62px;animation-duration:39s;animation-delay:-9s}
     .world-decor{
       position:absolute;
       left:0;
@@ -441,98 +408,6 @@
       border-top:1px solid rgba(56,63,72,.4);
       box-shadow:inset 0 6px 10px rgba(255,255,255,.18);
     }
-    .duck-lane{
-      position:absolute;
-      left:0;
-      right:0;
-      bottom:52px;
-      height:96px;
-      overflow:visible;
-      z-index:8;
-    }
-    .duck-wrap{
-      position:absolute;
-      left:0;
-      bottom:0;
-      display:flex;
-      align-items:flex-end;
-      gap:10px;
-      will-change:transform;
-      z-index:9;
-    }
-    .duck{
-      width:72px;
-      height:72px;
-      object-fit:contain;
-      image-rendering:auto;
-      filter:drop-shadow(0 4px 4px rgba(0,0,0,.18));
-      transform-origin:50% 86%;
-      animation:duckStep .44s ease-in-out infinite;
-    }
-    .bubble{
-      position:relative;
-      margin-bottom:84px;
-      padding:7px 11px;
-      background:#fff;
-      border:1px solid #d7dee6;
-      border-radius:999px;
-      font-size:.87rem;
-      color:#26313b;
-      white-space:nowrap;
-      box-shadow:0 6px 14px rgba(40,49,60,.12);
-      min-width:140px;
-      text-align:center;
-      animation:bubbleFloat .88s ease-in-out infinite;
-    }
-    .duck-wrap.is-sleeping .duck{
-      animation:none;
-      transform:translateY(0) rotate(7deg);
-    }
-    .duck-wrap.is-sleeping .bubble{
-      opacity:0;
-      visibility:hidden;
-    }
-    .sleep-z{
-      position:relative;
-      margin-bottom:92px;
-      margin-left:-4px;
-      font-weight:900;
-      font-size:1rem;
-      color:#eef5ff;
-      text-shadow:0 2px 4px rgba(10,17,29,.45);
-      opacity:0;
-      visibility:hidden;
-      pointer-events:none;
-    }
-    .sleep-z.is-active{
-      visibility:visible;
-      animation:sleepZ 1.4s ease-in-out infinite;
-    }
-    .bubble:after{
-      content:"";
-      position:absolute;
-      width:10px;height:10px;
-      left:22px;
-      bottom:-6px;
-      border-right:1px solid #d7dee6;
-      border-bottom:1px solid #d7dee6;
-      background:#fff;
-      transform:rotate(45deg);
-    }
-    @keyframes duckStep{
-      0%,100%{transform:translateY(0) rotate(-2deg)}
-      50%{transform:translateY(-2px) rotate(2deg)}
-    }
-    @keyframes bubbleFloat{
-      0%,100%{transform:translateY(0)}
-      50%{transform:translateY(-1px)}
-    }
-    @keyframes sleepZ{
-      0%{opacity:0;transform:translateY(6px) scale(.86)}
-      25%{opacity:1}
-      70%{opacity:1}
-      100%{opacity:0;transform:translateY(-26px) scale(1.08)}
-    }
     @keyframes cloudDrift{
       from{transform:translateX(0)}
       to{transform:translateX(calc(100vw + 220px))}
@@ -543,24 +418,14 @@
     }
     @keyframes nightStarsCycle{
       0%,42%,100%{opacity:0}
-      55%,88%{opacity:.92}
+      50%,90%{opacity:.92}
     }
-    @keyframes nightObjectCycle{
-      0%,45%,100%{opacity:0}
-      52%,88%{opacity:.9}
-    }
-    @keyframes shootingStar{
-      0%,72%{transform:translate(0,0) scale(0);opacity:0}
-      75%{transform:translate(0,0) scale(1);opacity:1}
-      100%{transform:translate(280px,130px) scale(.7);opacity:0}
-    }
-    @keyframes planeFly{
-      from{transform:translateX(-220px)}
-      to{transform:translateX(calc(100vw + 300px))}
+    @keyframes starTwinkle{
+      0%,100%{filter:brightness(1)}
+      50%{filter:brightness(1.25)}
     }
     @media (max-width:680px){
       .sheet{padding:18px}
-      .bubble{font-size:.8rem}
       .kofi-widget{
         right:10px;
         top:10px;
@@ -572,11 +437,27 @@
 </head>
 <body>
   <a class="kofi-widget" href="https://ko-fi.com/saveeditors" target="_blank" rel="noopener noreferrer">Buy Me A Coffee</a>
+  <div class="sky-clouds" aria-hidden="true">
+    <div class="clouds">
+      <span class="cloud cloud-a"></span>
+      <span class="cloud cloud-b"></span>
+      <span class="cloud cloud-c"></span>
+      <span class="cloud cloud-d"></span>
+      <span class="cloud cloud-e"></span>
+      <span class="cloud cloud-f"></span>
+      <span class="cloud cloud-g"></span>
+      <span class="cloud cloud-h"></span>
+    </div>
+  </div>
   <main class="page">
     <section class="sheet">
       <nav class="site-nav" aria-label="Site Links">
-        <a href="https://github.com/SaveEditors" target="_blank" rel="noopener noreferrer">SaveEditors</a>
-        <a class="kofi" href="https://ko-fi.com/saveeditors" target="_blank" rel="noopener noreferrer">Buy Me A Coffee</a>
+        <a class="org-link" href="https://github.com/SaveEditors" target="_blank" rel="noopener noreferrer" aria-label="SaveEditors on GitHub">
+          <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+            <path d="M8 0a8 8 0 0 0-2.53 15.59c.4.08.55-.17.55-.39l-.01-1.37c-2.01.44-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.53-.01-.54.63-.01 1.08.58 1.23.82.72 1.21 1.88.87 2.34.66.07-.52.28-.87.5-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.58.82-2.14-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.54 7.54 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.14 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48l-.01 2.2c0 .22.15.48.55.39A8 8 0 0 0 8 0Z"></path>
+          </svg>
+          <span>SaveEditors</span>
+        </a>
       </nav>
       <h1>SaveEditors</h1>
       <p class="lead">Welcome to my profile. This is a collection of save editors I've made. Primarily tested with the Windows Xbox Game Pass versions.</p>
@@ -592,32 +473,12 @@
   </main>
 
   <div class="scene" aria-hidden="true">
-    <div class="night-effects">
-      <span class="shooting-star shooting-a"></span>
-      <span class="shooting-star shooting-b"></span>
-    </div>
-    <div class="air-traffic">
-      <span class="plane plane-a"></span>
-      <span class="plane plane-b"></span>
-    </div>
-    <div class="clouds">
-      <span class="cloud cloud-a"></span>
-      <span class="cloud cloud-b"></span>
-      <span class="cloud cloud-c"></span>
-    </div>
     <div class="world-decor">
       <span class="bush bush-a"></span>
       <span class="tree tree-a"></span>
       <span class="bush bush-b"></span>
       <span class="tree tree-b"></span>
       <span class="bush bush-c"></span>
-    </div>
-    <div class="duck-lane">
-      <div class="duck-wrap">
-        <img class="duck" src="https://files.kick.com/emotes/4147914/fullsize" alt="">
-        <div id="duckBubble" class="bubble">welcome to my Profile</div>
-        <div id="duckSleepZ" class="sleep-z">Z</div>
-      </div>
     </div>
     <div class="grass"></div>
     <div class="stone"></div>
@@ -641,6 +502,10 @@
       } catch {
         return "";
       }
+    }
+
+    function isHomepageRepo(repoUrl) {
+      return getRepoPath(repoUrl).toLowerCase() === "saveeditors/saveeditors.github.io";
     }
 
     async function fetchLastUpdatedDate(repoUrl) {
@@ -696,108 +561,17 @@
         }
 
         list.innerHTML = hydrated.map((e) => {
-          return `<li><a href="${htmlEscape(e.play || e.repo || '#')}" target="_blank" rel="noopener noreferrer">${htmlEscape(e.name)}</a> · <a href="${htmlEscape(e.repo)}" target="_blank" rel="noopener noreferrer">repo</a><span class="repo-meta">Last Updated: ${htmlEscape(e.updated)}</span></li>`;
+          const repoLink = e.repo && !isHomepageRepo(e.repo)
+            ? ` · <a href="${htmlEscape(e.repo)}" target="_blank" rel="noopener noreferrer">repo</a>`
+            : "";
+          return `<li><a href="${htmlEscape(e.play || e.repo || '#')}" target="_blank" rel="noopener noreferrer">${htmlEscape(e.name)}</a>${repoLink}<span class="repo-meta">Last Updated: ${htmlEscape(e.updated)}</span></li>`;
         }).join("");
       } catch {
         if (quickLinks) quickLinks.innerHTML = '<span class="quick-chip ghost">Could not load editor links yet.</span>';
         list.innerHTML = "<li>Could not load editor list yet.</li>";
       }
     }
-    const DAY_NIGHT_CYCLE_MS = 20000;
-    const NIGHT_START_PHASE = 0.5;
-    const NIGHT_END_PHASE = 0.9;
-    const cycleStartMs = performance.now();
-    let duckAnimation = null;
-    let duckIsSleeping = false;
-
-    function startDuckWalk() {
-      const lane = document.querySelector(".duck-lane");
-      const wrap = document.querySelector(".duck-wrap");
-      if (!lane || !wrap || typeof wrap.animate !== "function") return;
-
-      const laneWidth = Math.max(window.innerWidth || 0, lane.clientWidth || 0, 360);
-      const startX = 80;
-      const endX = Math.max(220, laneWidth - 310);
-      const steps = Math.max(10, Math.floor((endX - startX) / 22));
-      const keyframes = [];
-
-      for (let i = 0; i <= steps; i += 1) {
-        const t = i / steps;
-        keyframes.push({
-          offset: t * 0.48,
-          transform: `translate(${Math.round(startX + (endX - startX) * t)}px, ${i % 2 ? -2 : 0}px)`
-        });
-      }
-      keyframes.push({ offset: 0.5, transform: `translate(${Math.round(endX)}px, 0px)` });
-      for (let i = 0; i <= steps; i += 1) {
-        const t = i / steps;
-        keyframes.push({
-          offset: 0.5 + t * 0.5,
-          transform: `translate(${Math.round(endX - (endX - startX) * t)}px, ${i % 2 ? -2 : 0}px)`
-        });
-      }
-
-      if (duckAnimation) duckAnimation.cancel();
-      duckAnimation = wrap.animate(keyframes, {
-        duration: 72000,
-        iterations: Infinity,
-        easing: "steps(160,end)"
-      });
-      if (duckIsSleeping && duckAnimation) {
-        duckAnimation.pause();
-      }
-    }
-
-    function setDuckSleeping(sleeping) {
-      const wrap = document.querySelector(".duck-wrap");
-      const sleepZ = document.getElementById("duckSleepZ");
-      if (!wrap || !sleepZ) return;
-      if (duckIsSleeping === sleeping) return;
-      duckIsSleeping = sleeping;
-      wrap.classList.toggle("is-sleeping", sleeping);
-      sleepZ.classList.toggle("is-active", sleeping);
-      if (duckAnimation) {
-        if (sleeping) {
-          duckAnimation.pause();
-        } else {
-          duckAnimation.play();
-        }
-      }
-    }
-
-    function startDuckSleepCycleWatcher() {
-      const tick = () => {
-        const phase = ((performance.now() - cycleStartMs) % DAY_NIGHT_CYCLE_MS) / DAY_NIGHT_CYCLE_MS;
-        const isNight = phase >= NIGHT_START_PHASE && phase <= NIGHT_END_PHASE;
-        setDuckSleeping(isNight);
-      };
-      tick();
-      setInterval(tick, 250);
-    }
-
-    function startDuckBubbleMessages() {
-      const bubble = document.getElementById("duckBubble");
-      if (!bubble) return;
-      const messages = [
-        "welcome to my Profile",
-        "im a duck btw",
-        "dev build: snacks + save files",
-        "i waddled through your backlog",
-        "ship it, then nap",
-        "yes, i test on real saves"
-      ];
-      let i = 0;
-      bubble.textContent = messages[i];
-      setInterval(() => {
-        i = (i + 1) % messages.length;
-        bubble.textContent = messages[i];
-      }, 6000);
-    }
     loadEditors();
-    startDuckWalk();
-    startDuckBubbleMessages();
-    startDuckSleepCycleWatcher();
-    window.addEventListener("resize", startDuckWalk);
   </script>
 </body>
 </html>
