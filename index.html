@@ -37,7 +37,37 @@
       background-size:28px 28px,28px 28px,auto,auto,auto;
       overflow-x:hidden;
     }
+    body:before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:1;
+      opacity:0;
+      background:linear-gradient(180deg,rgba(12,24,52,.76),rgba(8,14,30,.9));
+      animation:nightTintCycle 20s linear infinite;
+    }
+    body:after{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:1;
+      opacity:0;
+      background:
+        radial-gradient(circle at 9% 14%, rgba(255,255,255,.95) 0 1px, transparent 2px),
+        radial-gradient(circle at 18% 22%, rgba(255,255,255,.9) 0 1px, transparent 2px),
+        radial-gradient(circle at 27% 10%, rgba(255,255,255,.86) 0 1px, transparent 2px),
+        radial-gradient(circle at 42% 18%, rgba(255,255,255,.92) 0 1px, transparent 2px),
+        radial-gradient(circle at 58% 11%, rgba(255,255,255,.88) 0 1px, transparent 2px),
+        radial-gradient(circle at 64% 24%, rgba(255,255,255,.86) 0 1px, transparent 2px),
+        radial-gradient(circle at 78% 13%, rgba(255,255,255,.92) 0 1px, transparent 2px),
+        radial-gradient(circle at 89% 22%, rgba(255,255,255,.9) 0 1px, transparent 2px);
+      animation:nightStarsCycle 20s linear infinite;
+    }
     .page{
+      position:relative;
+      z-index:2;
       max-width:920px;
       margin:34px auto 0;
       padding:0 16px 170px;
@@ -126,6 +156,28 @@
       background:#edf3f8;
       border-color:#d6e1ec;
     }
+    .kofi-widget{
+      position:fixed;
+      right:16px;
+      top:16px;
+      z-index:80;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:9px 13px;
+      border-radius:999px;
+      border:1px solid #9e7d2f;
+      background:linear-gradient(180deg,#ffe8ad,#ffd67a);
+      color:#513e16;
+      font-weight:700;
+      text-decoration:none;
+      border-bottom:none;
+      box-shadow:0 8px 18px rgba(50,74,97,.24);
+    }
+    .kofi-widget:hover{
+      transform:translateY(-1px);
+      border-bottom:none;
+    }
     h2{
       margin:24px 0 10px;
       font-size:1.08rem;
@@ -189,6 +241,131 @@
     .cloud-a{left:-120px;top:8px;width:72px;animation-duration:34s}
     .cloud-b{left:38%;top:2px;width:84px;animation-duration:44s;animation-delay:-14s}
     .cloud-c{left:72%;top:11px;width:66px;animation-duration:38s;animation-delay:-26s}
+    .night-effects{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:4;
+    }
+    .shooting-star{
+      position:absolute;
+      width:3px;
+      height:3px;
+      border-radius:50%;
+      background:rgba(255,255,255,.98);
+      opacity:0;
+      filter:drop-shadow(0 0 6px rgba(255,255,255,.9));
+      animation:nightObjectCycle 20s linear infinite,shootingStar 4.2s linear infinite;
+    }
+    .shooting-star:after{
+      content:"";
+      position:absolute;
+      top:1px;
+      left:-70px;
+      width:72px;
+      height:2px;
+      background:linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,.7),rgba(255,255,255,0));
+      transform:rotate(-20deg);
+      transform-origin:right center;
+    }
+    .shooting-a{top:16%;left:14%;animation-delay:0s,0s}
+    .shooting-b{top:28%;left:68%;animation-delay:0s,1.7s}
+    .air-traffic{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:4;
+    }
+    .plane{
+      position:absolute;
+      left:-170px;
+      width:96px;
+      height:16px;
+      opacity:0;
+      animation:nightObjectCycle 20s linear infinite,planeFly 11s linear infinite;
+    }
+    .plane:before{
+      content:"";
+      position:absolute;
+      left:0;
+      top:7px;
+      width:56px;
+      height:4px;
+      border-radius:999px;
+      background:#d9e2eb;
+      box-shadow:8px -6px 0 -2px #e9f0f6;
+    }
+    .plane:after{
+      content:"";
+      position:absolute;
+      left:44px;
+      top:4px;
+      width:18px;
+      height:8px;
+      border-radius:2px;
+      background:#b6c4d2;
+      clip-path:polygon(0 50%,100% 0,100% 100%);
+    }
+    .plane-a{top:18%;animation-delay:0s,0s}
+    .plane-b{top:31%;animation-delay:0s,4.2s}
+    .world-decor{
+      position:absolute;
+      left:0;
+      right:0;
+      bottom:70px;
+      height:62px;
+      pointer-events:none;
+      z-index:2;
+    }
+    .bush{
+      position:absolute;
+      bottom:0;
+      width:96px;
+      height:28px;
+      border-radius:18px 18px 10px 10px;
+      background:linear-gradient(180deg,#4fae54 0%,#3a8f45 70%,#2d7738 100%);
+      box-shadow:0 3px 0 rgba(27,84,40,.45);
+    }
+    .bush:before,
+    .bush:after{
+      content:"";
+      position:absolute;
+      bottom:10px;
+      width:32px;
+      height:22px;
+      border-radius:18px 18px 8px 8px;
+      background:linear-gradient(180deg,#5dc063 0%,#44a34f 80%,#358941 100%);
+    }
+    .bush:before{left:8px}
+    .bush:after{right:8px}
+    .bush-a{left:12%;transform:scale(1.02)}
+    .bush-b{left:46%;transform:scale(.9)}
+    .bush-c{left:76%;transform:scale(1.08)}
+    .tree{
+      position:absolute;
+      bottom:0;
+      width:18px;
+      height:42px;
+      background:#6e4c2d;
+      box-shadow:inset -3px 0 0 rgba(35,22,12,.2);
+    }
+    .tree:before{
+      content:"";
+      position:absolute;
+      left:-19px;
+      bottom:18px;
+      width:56px;
+      height:38px;
+      background:
+        linear-gradient(180deg,#4cb669 0%,#349551 70%,#2b8045 100%);
+      box-shadow:
+        0 -16px 0 #3fa95e,
+        -10px -8px 0 #3a9f58,
+        10px -8px 0 #3a9f58;
+      image-rendering:pixelated;
+    }
+    .tree-a{left:32%}
+    .tree-b{left:62%;transform:scale(.95)}
     .grass{
       position:absolute;
       left:0;
@@ -268,7 +445,8 @@
       object-fit:contain;
       image-rendering:auto;
       filter:drop-shadow(0 4px 4px rgba(0,0,0,.18));
-      animation:duckBob .42s ease-in-out infinite;
+      transform-origin:50% 86%;
+      animation:duckStep .44s ease-in-out infinite;
     }
     .bubble{
       position:relative;
@@ -283,6 +461,7 @@
       box-shadow:0 6px 14px rgba(40,49,60,.12);
       min-width:140px;
       text-align:center;
+      animation:bubbleFloat .88s ease-in-out infinite;
     }
     .bubble:after{
       content:"";
@@ -295,21 +474,53 @@
       background:#fff;
       transform:rotate(45deg);
     }
-    @keyframes duckBob{
+    @keyframes duckStep{
+      0%,100%{transform:translateY(0) rotate(-2deg)}
+      50%{transform:translateY(-2px) rotate(2deg)}
+    }
+    @keyframes bubbleFloat{
       0%,100%{transform:translateY(0)}
-      50%{transform:translateY(-2px)}
+      50%{transform:translateY(-1px)}
     }
     @keyframes cloudDrift{
       from{transform:translateX(0)}
       to{transform:translateX(calc(100vw + 220px))}
     }
+    @keyframes nightTintCycle{
+      0%,42%,100%{opacity:0}
+      50%,90%{opacity:1}
+    }
+    @keyframes nightStarsCycle{
+      0%,42%,100%{opacity:0}
+      55%,88%{opacity:.92}
+    }
+    @keyframes nightObjectCycle{
+      0%,45%,100%{opacity:0}
+      52%,88%{opacity:.9}
+    }
+    @keyframes shootingStar{
+      0%,72%{transform:translate(0,0) scale(0);opacity:0}
+      75%{transform:translate(0,0) scale(1);opacity:1}
+      100%{transform:translate(280px,130px) scale(.7);opacity:0}
+    }
+    @keyframes planeFly{
+      from{transform:translateX(-220px)}
+      to{transform:translateX(calc(100vw + 300px))}
+    }
     @media (max-width:680px){
       .sheet{padding:18px}
       .bubble{font-size:.8rem}
+      .kofi-widget{
+        right:10px;
+        top:10px;
+        font-size:.82rem;
+        padding:8px 11px;
+      }
     }
   </style>
 </head>
 <body>
+  <a class="kofi-widget" href="https://ko-fi.com/saveeditors" target="_blank" rel="noopener noreferrer">Buy Me A Coffee</a>
   <main class="page">
     <section class="sheet">
       <nav class="site-nav" aria-label="Site Links">
@@ -331,10 +542,25 @@
   </main>
 
   <div class="scene" aria-hidden="true">
+    <div class="night-effects">
+      <span class="shooting-star shooting-a"></span>
+      <span class="shooting-star shooting-b"></span>
+    </div>
+    <div class="air-traffic">
+      <span class="plane plane-a"></span>
+      <span class="plane plane-b"></span>
+    </div>
     <div class="clouds">
       <span class="cloud cloud-a"></span>
       <span class="cloud cloud-b"></span>
       <span class="cloud cloud-c"></span>
+    </div>
+    <div class="world-decor">
+      <span class="bush bush-a"></span>
+      <span class="tree tree-a"></span>
+      <span class="bush bush-b"></span>
+      <span class="tree tree-b"></span>
+      <span class="bush bush-c"></span>
     </div>
     <div class="duck-lane">
       <div class="duck-wrap">
@@ -434,32 +660,32 @@
       if (!lane || !wrap || typeof wrap.animate !== "function") return;
 
       const laneWidth = Math.max(window.innerWidth || 0, lane.clientWidth || 0, 360);
-      const margin = 90;
-      const points = 9 + Math.floor(Math.random() * 5);
-      let x = Math.floor(Math.random() * Math.max(1, laneWidth - 120));
-      let previousX = x;
+      const startX = 80;
+      const endX = Math.max(220, laneWidth - 310);
+      const steps = Math.max(10, Math.floor((endX - startX) / 22));
       const keyframes = [];
 
-      for (let i = 0; i < points; i += 1) {
-        if (i > 0) {
-          const stride = Math.round((Math.random() * 2 - 1) * 280);
-          x = Math.max(-margin, Math.min(laneWidth - margin, x + stride));
-        }
-        const y = Math.round((Math.random() * 2 - 1) * 8);
-        const facing = x >= previousX ? 1 : -1;
+      for (let i = 0; i <= steps; i += 1) {
+        const t = i / steps;
         keyframes.push({
-          offset: points === 1 ? 1 : i / (points - 1),
-          transform: `translate(${Math.round(x)}px, ${y}px) scaleX(${facing})`
+          offset: t * 0.48,
+          transform: `translate(${Math.round(startX + (endX - startX) * t)}px, ${i % 2 ? -2 : 0}px)`
         });
-        previousX = x;
+      }
+      keyframes.push({ offset: 0.5, transform: `translate(${Math.round(endX)}px, 0px)` });
+      for (let i = 0; i <= steps; i += 1) {
+        const t = i / steps;
+        keyframes.push({
+          offset: 0.5 + t * 0.5,
+          transform: `translate(${Math.round(endX - (endX - startX) * t)}px, ${i % 2 ? -2 : 0}px)`
+        });
       }
 
-      const duration = 18000 + Math.floor(Math.random() * 12000);
       if (duckAnimation) duckAnimation.cancel();
       duckAnimation = wrap.animate(keyframes, {
-        duration,
+        duration: 16000,
         iterations: Infinity,
-        easing: "linear"
+        easing: "steps(160,end)"
       });
     }
 
