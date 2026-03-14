@@ -1,9 +1,9 @@
 [
   {
     "name": "Minecraft Dungeons - Save Editor",
-    "slug": "mcd-save-editor",
-    "repo": "https://github.com/CutFlame/MCDSaveEdit",
-    "play": "https://saveeditors.github.io/mcd-save-editor/",
+    "slug": "minecraft-dungeons-save-editor",
+    "repo": "https://github.com/SaveEditors/SaveEditors.github.io/tree/main/minecraft-dungeons-save-editor",
+    "play": "https://saveeditors.github.io/minecraft-dungeons-save-editor/",
     "summary": "Browser-based Minecraft Dungeons save editor with .dat decrypt/encrypt compatibility, inventory/chest/stat editing, and raw JSON control.",
     "tags": [
       "Minecraft Dungeons",
