@@ -6,15 +6,18 @@
   <title>SaveEditors</title>
   <style>
     :root{
-      --bg:#f6f8fb;
-      --grid:rgba(144,156,170,.26);
+      --bg:#bfe7ff;
+      --sky-top:#def3ff;
+      --sky-bottom:#b7e2ff;
+      --grid:rgba(98,136,166,.24);
       --text:#1f2329;
       --soft:#56606a;
       --panel:#ffffffdc;
       --line:#d6dde6;
       --link:#234f7b;
-      --grass-a:#8fbf73;
-      --grass-b:#7eab65;
+      --grass-a:#84c96d;
+      --grass-b:#5ca64a;
+      --grass-c:#4a8c3c;
       --stone-a:#9da5ad;
       --stone-b:#8f98a1;
       --stone-c:#aeb5bc;
@@ -28,9 +31,10 @@
       background:
         linear-gradient(to right, var(--grid) 1px, transparent 1px),
         linear-gradient(to bottom, var(--grid) 1px, transparent 1px),
-        radial-gradient(circle at top right, rgba(255,255,255,.75), transparent 36%),
-        linear-gradient(180deg, #fbfdff, var(--bg));
-      background-size:20px 20px,20px 20px,auto,auto;
+        radial-gradient(150px 80px at 16% 16%, rgba(255,255,255,.82), rgba(255,255,255,0) 75%),
+        radial-gradient(190px 90px at 74% 12%, rgba(255,255,255,.7), rgba(255,255,255,0) 76%),
+        linear-gradient(180deg, var(--sky-top), var(--sky-bottom) 62%, var(--bg));
+      background-size:28px 28px,28px 28px,auto,auto,auto;
       overflow-x:hidden;
     }
     .page{
@@ -100,18 +104,68 @@
       pointer-events:none;
       z-index:30;
     }
+    .clouds{
+      position:absolute;
+      left:0;
+      right:0;
+      bottom:74px;
+      height:44px;
+      overflow:hidden;
+      opacity:.95;
+    }
+    .cloud{
+      position:absolute;
+      display:block;
+      height:18px;
+      border-radius:999px;
+      background:rgba(255,255,255,.82);
+      box-shadow:
+        20px -8px 0 5px rgba(255,255,255,.82),
+        42px -3px 0 2px rgba(255,255,255,.82),
+        58px 2px 0 0 rgba(255,255,255,.72);
+      filter:drop-shadow(0 2px 3px rgba(80,117,145,.2));
+      animation:cloudDrift 30s linear infinite;
+    }
+    .cloud-a{left:-120px;top:8px;width:72px;animation-duration:34s}
+    .cloud-b{left:38%;top:2px;width:84px;animation-duration:44s;animation-delay:-14s}
+    .cloud-c{left:72%;top:11px;width:66px;animation-duration:38s;animation-delay:-26s}
     .grass{
       position:absolute;
       left:0;
       right:0;
       bottom:48px;
       height:20px;
-      background:repeating-linear-gradient(
-        -25deg,
-        var(--grass-a) 0 16px,
-        var(--grass-b) 16px 32px
-      );
+      background:linear-gradient(180deg,var(--grass-a) 0%,var(--grass-b) 72%,var(--grass-c) 100%);
       border-top:1px solid rgba(74,110,57,.35);
+      box-shadow:inset 0 2px 3px rgba(255,255,255,.3), inset 0 -3px 4px rgba(37,75,29,.24);
+    }
+    .grass:before,
+    .grass:after{
+      content:"";
+      position:absolute;
+      left:0;
+      right:0;
+      pointer-events:none;
+    }
+    .grass:before{
+      top:0;
+      bottom:0;
+      background:repeating-linear-gradient(
+        -38deg,
+        rgba(255,255,255,.2) 0 12px,
+        rgba(255,255,255,0) 12px 24px
+      );
+      opacity:.7;
+    }
+    .grass:after{
+      top:2px;
+      bottom:0;
+      background:repeating-linear-gradient(
+        90deg,
+        rgba(58,102,47,0) 0 6px,
+        rgba(58,102,47,.38) 6px 7px
+      );
+      opacity:.45;
     }
     .stone{
       position:absolute;
@@ -150,7 +204,8 @@
       filter:drop-shadow(0 4px 4px rgba(0,0,0,.18));
     }
     .bubble{
-      margin-bottom:34px;
+      position:relative;
+      margin-bottom:56px;
       padding:7px 11px;
       background:#fff;
       border:1px solid #d7dee6;
@@ -163,17 +218,21 @@
     .bubble:after{
       content:"";
       position:absolute;
-      width:9px;height:9px;
-      border-left:1px solid #d7dee6;
+      width:10px;height:10px;
+      left:22px;
+      bottom:-6px;
+      border-right:1px solid #d7dee6;
       border-bottom:1px solid #d7dee6;
       background:#fff;
-      transform:rotate(-45deg);
-      margin-left:-56px;
-      margin-top:20px;
+      transform:rotate(45deg);
     }
     @keyframes duckWalk{
       from{transform:translateX(0)}
       to{transform:translateX(calc(100vw + 160px))}
+    }
+    @keyframes cloudDrift{
+      from{transform:translateX(0)}
+      to{transform:translateX(calc(100vw + 220px))}
     }
     @media (max-width:680px){
       .sheet{padding:18px}
@@ -196,6 +255,11 @@
   </main>
 
   <div class="scene" aria-hidden="true">
+    <div class="clouds">
+      <span class="cloud cloud-a"></span>
+      <span class="cloud cloud-b"></span>
+      <span class="cloud cloud-c"></span>
+    </div>
     <div class="duck-lane">
       <div class="duck-wrap">
         <img class="duck" src="https://files.kick.com/emotes/4147914/fullsize" alt="">
