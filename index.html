@@ -3,458 +3,232 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SaveEditors Home</title>
+  <title>SaveEditors</title>
   <style>
-    @import url("https://fonts.googleapis.com/css2?family=Averia+Sans+Libre:wght@400;700&family=IBM+Plex+Mono:wght@400;500&display=swap");
     :root{
-      --bg:#f7f3e9;
-      --paper:#fffdf8;
-      --line:#d8d0be;
-      --text:#2a2a28;
-      --soft:#6f6a5f;
-      --mint:#d7eadf;
-      --mint-strong:#79a988;
-      --sky:#d9e7f7;
-      --gold:#f4dfab;
-      --chip:#f1ecde;
-      --shadow:0 12px 30px rgba(40,36,30,.08);
-      --radius:16px;
+      --bg:#f6f8fb;
+      --grid:rgba(144,156,170,.26);
+      --text:#1f2329;
+      --soft:#56606a;
+      --panel:#ffffffdc;
+      --line:#d6dde6;
+      --link:#234f7b;
+      --grass-a:#8fbf73;
+      --grass-b:#7eab65;
+      --stone-a:#9da5ad;
+      --stone-b:#8f98a1;
+      --stone-c:#aeb5bc;
     }
     *{box-sizing:border-box}
+    html,body{height:100%}
     body{
       margin:0;
-      font-family:"Averia Sans Libre",system-ui,sans-serif;
+      font-family:Segoe UI, system-ui, -apple-system, Arial, sans-serif;
       color:var(--text);
       background:
-        radial-gradient(circle at 0 0,rgba(255,255,255,.6),transparent 32%),
-        radial-gradient(circle at 100% 0,rgba(255,255,255,.5),transparent 28%),
-        linear-gradient(120deg,#f8f4eb,#f6f0e2 48%,#f9f4eb);
+        linear-gradient(to right, var(--grid) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--grid) 1px, transparent 1px),
+        radial-gradient(circle at top right, rgba(255,255,255,.75), transparent 36%),
+        linear-gradient(180deg, #fbfdff, var(--bg));
+      background-size:20px 20px,20px 20px,auto,auto;
+      overflow-x:hidden;
     }
-    .wrap{max-width:1200px;margin:0 auto;padding:26px 16px 50px;display:grid;gap:18px}
-    .hero{
-      border:1px solid var(--line);
-      border-radius:22px;
-      background:linear-gradient(150deg,#fffdfa,#f7f3e8);
-      box-shadow:var(--shadow);
-      padding:22px;
-      display:grid;
-      gap:16px;
+    .page{
+      max-width:920px;
+      margin:34px auto 0;
+      padding:0 16px 170px;
     }
-    .hero-top{display:flex;gap:18px;justify-content:space-between;align-items:center;flex-wrap:wrap}
-    h1{margin:0;font-size:clamp(1.6rem,2.8vw,2.6rem);line-height:1.08}
-    .subtitle{margin:8px 0 0;color:var(--soft);max-width:820px;line-height:1.5}
-    .mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
-    .pet{
-      width:150px;
-      min-height:132px;
+    .sheet{
       border:1px solid var(--line);
-      border-radius:20px;
-      background:linear-gradient(165deg,var(--mint),#eaf5ee);
-      position:relative;
-      box-shadow:var(--shadow);
-      flex-shrink:0;
+      border-radius:16px;
+      background:var(--panel);
+      backdrop-filter:blur(4px);
+      box-shadow:0 16px 36px rgba(30,40,54,.08);
+      padding:22px 24px;
+    }
+    h1{
+      margin:0 0 10px;
+      font-size:clamp(1.7rem,3.2vw,2.4rem);
+      letter-spacing:.02em;
+    }
+    .lead{
+      margin:0;
+      color:var(--soft);
+      line-height:1.55;
+    }
+    .hello{
+      margin:16px 0 0;
+      font-size:1.12rem;
+      font-weight:600;
+    }
+    .hello code{
+      font-size:1rem;
+      border:1px solid var(--line);
+      border-radius:999px;
+      padding:4px 10px;
+      background:#fff;
+    }
+    h2{
+      margin:24px 0 10px;
+      font-size:1.08rem;
+      letter-spacing:.04em;
+      text-transform:uppercase;
+      color:#2d3540;
+    }
+    ul{
+      margin:0;
+      padding-left:18px;
+    }
+    li{
+      margin:10px 0;
+      line-height:1.45;
+    }
+    a{
+      color:var(--link);
+      text-decoration:none;
+      border-bottom:1px dashed rgba(35,79,123,.35);
+    }
+    a:hover{
+      border-bottom-color:rgba(35,79,123,.85);
+    }
+    .scene{
+      position:fixed;
+      left:0;
+      right:0;
+      bottom:0;
+      height:130px;
+      pointer-events:none;
+      z-index:30;
+    }
+    .grass{
+      position:absolute;
+      left:0;
+      right:0;
+      bottom:48px;
+      height:20px;
+      background:repeating-linear-gradient(
+        -25deg,
+        var(--grass-a) 0 16px,
+        var(--grass-b) 16px 32px
+      );
+      border-top:1px solid rgba(74,110,57,.35);
+    }
+    .stone{
+      position:absolute;
+      left:0;
+      right:0;
+      bottom:0;
+      height:48px;
+      background:
+        repeating-linear-gradient(90deg,var(--stone-a) 0 42px,var(--stone-b) 42px 84px,var(--stone-c) 84px 126px),
+        linear-gradient(180deg,#b6bec6,#9da7b0);
+      border-top:1px solid rgba(56,63,72,.4);
+      box-shadow:inset 0 6px 10px rgba(255,255,255,.18);
+    }
+    .duck-lane{
+      position:absolute;
+      left:0;
+      right:0;
+      bottom:52px;
+      height:72px;
       overflow:hidden;
     }
-    .pet:before,.pet:after{
+    .duck-wrap{
+      position:absolute;
+      left:-120px;
+      bottom:0;
+      display:flex;
+      align-items:flex-end;
+      gap:10px;
+      animation:duckWalk 16s linear infinite;
+    }
+    .duck{
+      width:72px;
+      height:72px;
+      object-fit:contain;
+      image-rendering:auto;
+      filter:drop-shadow(0 4px 4px rgba(0,0,0,.18));
+    }
+    .bubble{
+      margin-bottom:34px;
+      padding:7px 11px;
+      background:#fff;
+      border:1px solid #d7dee6;
+      border-radius:999px;
+      font-size:.87rem;
+      color:#26313b;
+      white-space:nowrap;
+      box-shadow:0 6px 14px rgba(40,49,60,.12);
+    }
+    .bubble:after{
       content:"";
       position:absolute;
-      top:22px;
-      width:18px;height:18px;
-      border-radius:50%;
-      background:#2b3b33;
-      box-shadow:inset 0 4px 0 rgba(255,255,255,.3);
-      animation:blink 5.5s infinite;
-    }
-    .pet:before{left:46px}
-    .pet:after{right:46px}
-    .pet-body{
-      position:absolute;
-      left:50%;
-      top:56px;
-      transform:translateX(-50%);
-      width:88px;height:54px;
-      border:2px solid #2b3b33;
-      border-radius:24px;
-      background:#f8fff8;
-    }
-    .pet-ear{
-      position:absolute;
-      top:-18px;
-      width:22px;height:22px;
-      border:2px solid #2b3b33;
-      background:#f8fff8;
-      transform:rotate(45deg);
-    }
-    .pet-ear.left{left:16px}
-    .pet-ear.right{right:16px}
-    .pet-note{
-      position:absolute;
-      left:8px;right:8px;bottom:8px;
-      font-size:.75rem;
-      color:#32463b;
-      text-align:center;
-      padding:6px;
-      border-radius:999px;
-      border:1px dashed rgba(43,59,51,.35);
-      background:rgba(255,255,255,.5);
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-    }
-    @keyframes blink{
-      0%,92%,100%{transform:scaleY(1)}
-      94%,96%{transform:scaleY(.1)}
-    }
-    .status-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-    .pill{
-      border:1px solid var(--line);
-      border-radius:999px;
-      padding:8px 12px;
-      background:var(--paper);
-      color:var(--soft);
-      font-size:.86rem;
-    }
-    .panel{
-      border:1px solid var(--line);
-      border-radius:var(--radius);
-      background:var(--paper);
-      box-shadow:var(--shadow);
-      padding:14px;
-      display:grid;
-      gap:12px;
-    }
-    .tools{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:center;
-      justify-content:space-between;
-    }
-    .search{
-      flex:1;
-      min-width:220px;
-      border:1px solid var(--line);
-      border-radius:12px;
-      padding:10px 11px;
+      width:9px;height:9px;
+      border-left:1px solid #d7dee6;
+      border-bottom:1px solid #d7dee6;
       background:#fff;
-      font:inherit;
+      transform:rotate(-45deg);
+      margin-left:-56px;
+      margin-top:20px;
     }
-    .chip-row{display:flex;gap:8px;flex-wrap:wrap}
-    .chip{
-      border:1px solid var(--line);
-      border-radius:999px;
-      background:var(--chip);
-      padding:7px 10px;
-      cursor:pointer;
-      font:inherit;
-      color:#4d493f;
+    @keyframes duckWalk{
+      from{transform:translateX(0)}
+      to{transform:translateX(calc(100vw + 160px))}
     }
-    .chip.active{background:var(--mint);border-color:#b6d9c2;color:#1f3f2d}
-    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
-    .card{
-      border:1px solid var(--line);
-      border-radius:14px;
-      background:#fff;
-      padding:12px;
-      display:grid;
-      gap:10px;
-      transition:transform .18s ease,box-shadow .18s ease;
-    }
-    .card:hover{transform:translateY(-2px);box-shadow:0 14px 24px rgba(37,34,29,.08)}
-    .card-head{display:flex;gap:8px;justify-content:space-between;align-items:start}
-    .card h3{margin:0;font-size:1.02rem}
-    .badge{
-      border:1px solid #c6e0cf;
-      border-radius:999px;
-      background:#e8f6ed;
-      color:#26543b;
-      padding:4px 9px;
-      font-size:.75rem;
-      text-transform:uppercase;
-      letter-spacing:.04em;
-    }
-    .summary{margin:0;color:#5d5850;font-size:.92rem;line-height:1.45}
-    .meta{display:grid;gap:6px}
-    .meta-line{
-      display:flex;gap:8px;align-items:baseline;justify-content:space-between;
-      border:1px dashed #e3dccb;border-radius:9px;padding:6px 8px;background:#fffcf2;
-      font-size:.84rem;
-    }
-    .meta-line .k{color:#7b7467}
-    .meta-line .v{text-align:right;max-width:70%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .commit{border:1px solid #e3dccb;border-radius:9px;padding:8px;background:#fffef8;font-size:.83rem;color:#4b463d;line-height:1.35}
-    .actions{display:flex;gap:8px;flex-wrap:wrap}
-    .btn{
-      text-decoration:none;
-      border:1px solid var(--line);
-      border-radius:999px;
-      padding:8px 11px;
-      background:var(--sky);
-      color:#24415d;
-      font-size:.86rem;
-    }
-    .btn.secondary{background:#f4f0e5;color:#4e473a}
-    .empty{
-      border:1px dashed var(--line);
-      border-radius:12px;
-      padding:16px;
-      color:#70695d;
-      background:#fdfaf1;
-    }
-    .footer{
-      margin-top:4px;
-      border:1px solid var(--line);
-      border-radius:12px;
-      padding:12px 14px;
-      background:linear-gradient(180deg,#fffdf8,#f8f2e4);
-      color:#655f54;
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-      justify-content:space-between;
-      align-items:center;
-      font-size:.86rem;
-    }
-    .footer a{color:#284b6b;text-decoration:none}
-    @media (max-width:720px){
-      .hero-top{align-items:flex-start}
-      .pet{width:100%}
-      .meta-line{display:grid;gap:2px}
-      .meta-line .v{max-width:100%;text-align:left}
+    @media (max-width:680px){
+      .sheet{padding:18px}
+      .bubble{font-size:.8rem}
     }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <section class="hero">
-      <div class="hero-top">
-        <div>
-          <h1>Welcome Home, SaveEditors</h1>
-          <p class="subtitle">
-            A friendly workbench for all community save editors. Each card below pulls live repo info
-            from GitHub so you can see when a tool was created, when it was last pushed, and the latest commit note.
-          </p>
-        </div>
-        <aside class="pet" aria-label="Mascot">
-          <div class="pet-body">
-            <div class="pet-ear left"></div>
-            <div class="pet-ear right"></div>
-          </div>
-          <div class="pet-note" id="petNote">Patch is warming up...</div>
-        </aside>
-      </div>
-      <div class="status-row">
-        <div class="pill">Org: <strong class="mono">SaveEditors</strong></div>
-        <div class="pill">Now: <strong id="clockLocal">--</strong></div>
-        <div class="pill">Tools Loaded: <strong id="toolCount">0</strong></div>
-        <div class="pill">Last Refresh: <strong id="refreshStamp">--</strong></div>
-      </div>
-    </section>
+  <main class="page">
+    <section class="sheet">
+      <h1>SaveEditors</h1>
+      <p class="lead">Welcome to my profile. This is the simple home for our save editors.</p>
+      <p class="hello"><code>helloworld</code></p>
 
-    <section class="panel">
-      <div class="tools">
-        <input id="searchInput" class="search" type="text" placeholder="Search by name, tag, or repo slug">
-        <button id="reloadButton" class="chip" type="button">Reload Metadata</button>
-      </div>
-      <div id="tagRow" class="chip-row"></div>
-      <div id="cardsGrid" class="grid"></div>
+      <h2>Save Editors</h2>
+      <ul id="editorList">
+        <li>Loading editors...</li>
+      </ul>
     </section>
+  </main>
 
-    <footer class="footer">
-      <span>Built with care for people who actually use save editors daily.</span>
-      <span>
-        <a href="https://github.com/SaveEditors" target="_blank" rel="noopener noreferrer">GitHub Org</a>
-        •
-        <a href="https://github.com/SaveEditors/SaveEditors.github.io" target="_blank" rel="noopener noreferrer">Home Repo</a>
-      </span>
-    </footer>
+  <div class="scene" aria-hidden="true">
+    <div class="duck-lane">
+      <div class="duck-wrap">
+        <img class="duck" src="https://files.kick.com/emotes/4147914/fullsize" alt="">
+        <div class="bubble">welcome to my Profile</div>
+      </div>
+    </div>
+    <div class="grass"></div>
+    <div class="stone"></div>
   </div>
 
   <script>
     "use strict";
-
-    const dom = {
-      cardsGrid: document.getElementById("cardsGrid"),
-      tagRow: document.getElementById("tagRow"),
-      searchInput: document.getElementById("searchInput"),
-      reloadButton: document.getElementById("reloadButton"),
-      toolCount: document.getElementById("toolCount"),
-      refreshStamp: document.getElementById("refreshStamp"),
-      clockLocal: document.getElementById("clockLocal"),
-      petNote: document.getElementById("petNote")
-    };
-
-    const state = {
-      editors: [],
-      activeTag: "All",
-      query: ""
-    };
-
-    const petLines = [
-      "Patch says: push tiny fixes often.",
-      "Patch says: backups first, edits second.",
-      "Patch says: label unknown fields clearly.",
-      "Patch says: clean UI beats flashy UI.",
-      "Patch says: ship tools people can trust."
-    ];
-
-    function fmtDate(iso) {
-      if (!iso) return "Unknown";
-      const d = new Date(iso);
-      if (Number.isNaN(d.getTime())) return "Unknown";
-      return d.toLocaleString(undefined, {
-        year: "numeric",
-        month: "short",
-        day: "2-digit",
-        hour: "2-digit",
-        minute: "2-digit"
-      });
-    }
-
-    function firstLine(text) {
-      return String(text || "").split("\n")[0].trim() || "No commit message";
-    }
-
-    function repoSlugFromUrl(url) {
-      const m = String(url || "").match(/github\.com\/([^/]+\/[^/]+)/i);
-      return m ? m[1].replace(/\.git$/i, "") : "";
-    }
-
-    async function fetchRepoMeta(slug) {
-      const repoRes = await fetch(`https://api.github.com/repos/${slug}`, {
-        headers: { Accept: "application/vnd.github+json" }
-      });
-      if (!repoRes.ok) throw new Error(`repo ${repoRes.status}`);
-      const repo = await repoRes.json();
-
-      const commitsRes = await fetch(`https://api.github.com/repos/${slug}/commits?per_page=1`, {
-        headers: { Accept: "application/vnd.github+json" }
-      });
-      const commits = commitsRes.ok ? await commitsRes.json() : [];
-      const latest = Array.isArray(commits) && commits.length ? commits[0] : null;
-
-      return {
-        createdAt: repo.created_at,
-        updatedAt: repo.pushed_at || repo.updated_at,
-        defaultBranch: repo.default_branch || "main",
-        commitSummary: latest ? firstLine(latest.commit?.message) : "No commits yet",
-        commitDate: latest?.commit?.author?.date || null
-      };
-    }
-
-    function cardTemplate(editor) {
-      const tags = (editor.tags || []).map((t) => `<span class="chip">${t}</span>`).join("");
-      const status = editor.metaError ? "pending" : "live";
-      const playHref = editor.play || `https://saveeditors.github.io/${editor.slug}/`;
-      const repoHref = editor.repo || `https://github.com/SaveEditors/${editor.slug}`;
-      return `
-        <article class="card">
-          <div class="card-head">
-            <h3>${editor.name}</h3>
-            <span class="badge">${status}</span>
-          </div>
-          <p class="summary">${editor.summary || "Community save editor."}</p>
-          <div class="chip-row">${tags || "<span class=\"chip\">General</span>"}</div>
-          <div class="meta">
-            <div class="meta-line"><span class="k">Created</span><span class="v mono">${fmtDate(editor.createdAt)}</span></div>
-            <div class="meta-line"><span class="k">Last Push</span><span class="v mono">${fmtDate(editor.updatedAt)}</span></div>
-            <div class="meta-line"><span class="k">Last Commit</span><span class="v mono">${fmtDate(editor.commitDate)}</span></div>
-          </div>
-          <div class="commit">${editor.commitSummary || "Metadata unavailable. Repo may not be published yet."}</div>
-          <div class="actions">
-            <a class="btn" href="${playHref}" target="_blank" rel="noopener noreferrer">Open Editor</a>
-            <a class="btn secondary" href="${repoHref}" target="_blank" rel="noopener noreferrer">Repository</a>
-          </div>
-        </article>
-      `;
-    }
-
-    function renderTags() {
-      const tagSet = new Set(["All"]);
-      state.editors.forEach((e) => (e.tags || []).forEach((t) => tagSet.add(t)));
-      dom.tagRow.innerHTML = [...tagSet].map((tag) => `
-        <button class="chip ${state.activeTag === tag ? "active" : ""}" data-tag="${tag}" type="button">${tag}</button>
-      `).join("");
-      dom.tagRow.querySelectorAll("[data-tag]").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          state.activeTag = btn.dataset.tag;
-          renderCards();
-          renderTags();
-        });
-      });
-    }
-
-    function renderCards() {
-      const q = state.query.trim().toLowerCase();
-      const list = state.editors.filter((e) => {
-        if (state.activeTag !== "All" && !(e.tags || []).includes(state.activeTag)) return false;
-        if (!q) return true;
-        const hay = `${e.name} ${e.slug} ${(e.tags || []).join(" ")} ${e.summary || ""}`.toLowerCase();
-        return hay.includes(q);
-      });
-      dom.toolCount.textContent = String(list.length);
-      dom.cardsGrid.innerHTML = list.length ? list.map(cardTemplate).join("") : `
-        <div class="empty">No tools match your filter yet. Try another tag or clear search.</div>
-      `;
-    }
-
     async function loadEditors() {
-      dom.cardsGrid.innerHTML = `<div class="empty">Loading editors and checking GitHub metadata...</div>`;
-      const res = await fetch("editors.json", { cache: "no-store" });
-      if (!res.ok) throw new Error("Could not read editors.json");
-      const base = await res.json();
-
-      const hydrated = await Promise.all(base.map(async (item) => {
-        const editor = { ...item, slug: item.slug || "", metaError: false };
-        const slug = repoSlugFromUrl(item.repo) || `SaveEditors/${item.slug}`;
-        try {
-          const meta = await fetchRepoMeta(slug);
-          return { ...editor, ...meta };
-        } catch {
-          return {
-            ...editor,
-            metaError: true,
-            createdAt: null,
-            updatedAt: null,
-            commitDate: null,
-            commitSummary: "Metadata unavailable right now (repo may be private/unpublished or API-limited)."
-          };
+      const list = document.getElementById("editorList");
+      try {
+        const res = await fetch("editors.json", { cache: "no-store" });
+        if (!res.ok) throw new Error("editors.json not found");
+        const editors = await res.json();
+        if (!Array.isArray(editors) || !editors.length) {
+          list.innerHTML = "<li>No editors listed yet.</li>";
+          return;
         }
-      }));
-
-      state.editors = hydrated;
-      dom.refreshStamp.textContent = new Date().toLocaleTimeString();
-      renderTags();
-      renderCards();
+        list.innerHTML = editors.map((e) => {
+          const play = e.play || "";
+          const repo = e.repo || "";
+          const name = e.name || e.slug || "Unnamed Editor";
+          return `<li><a href="${play}" target="_blank" rel="noopener noreferrer">${name}</a> · <a href="${repo}" target="_blank" rel="noopener noreferrer">repo</a></li>`;
+        }).join("");
+      } catch {
+        list.innerHTML = "<li>Could not load editor list yet.</li>";
+      }
     }
-
-    function tickClock() {
-      dom.clockLocal.textContent = new Date().toLocaleString();
-    }
-
-    function rotatePetLine() {
-      const line = petLines[Math.floor(Math.random() * petLines.length)];
-      dom.petNote.textContent = line;
-    }
-
-    dom.searchInput.addEventListener("input", (e) => {
-      state.query = e.target.value;
-      renderCards();
-    });
-
-    dom.reloadButton.addEventListener("click", () => {
-      loadEditors().catch((err) => {
-        dom.cardsGrid.innerHTML = `<div class="empty">Reload failed: ${String(err.message || err)}</div>`;
-      });
-    });
-
-    tickClock();
-    rotatePetLine();
-    setInterval(tickClock, 1000);
-    setInterval(rotatePetLine, 7000);
-    loadEditors().catch((err) => {
-      dom.cardsGrid.innerHTML = `<div class="empty">Startup failed: ${String(err.message || err)}</div>`;
-    });
+    loadEditors();
   </script>
 </body>
 </html>
