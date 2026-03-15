@@ -406,7 +406,7 @@
       width:78px;
       height:72px;
       z-index:20;
-      transform:translateX(40px) scaleX(1);
+      transform:translateX(40px);
       transform-origin:center bottom;
       will-change:transform;
     }
@@ -419,6 +419,9 @@
       object-fit:contain;
       image-rendering:auto;
       filter:drop-shadow(0 3px 3px rgba(0,0,0,.2));
+      transform:scaleX(1);
+      transform-origin:center bottom;
+      will-change:transform;
     }
     .duck-note{
       position:absolute;
@@ -668,31 +671,78 @@
         list.innerHTML = "<li>Could not load editor list yet.</li>";
       }
     }
-    let duckWalkAnimation = null;
+    let duckRafId = 0;
+    const duckState = {
+      x: 40,
+      y: 0,
+      dir: 1,
+      speed: 40,
+      targetSpeed: 40,
+      minX: 28,
+      maxX: 600,
+      lastTs: 0,
+      nextMoodTs: 0,
+      pauseUntilTs: 0
+    };
+
+    function rand(min, max) {
+      return min + Math.random() * (max - min);
+    }
 
     function startDuckWalk() {
       const decor = document.querySelector(".world-decor");
       const wrap = document.querySelector(".duck-wrap");
-      if (!decor || !wrap || typeof wrap.animate !== "function") return;
+      const duck = document.querySelector(".duck");
+      if (!decor || !wrap || !duck) return;
 
-      const startX = 28;
-      const endX = Math.max(startX + 140, decor.clientWidth - 132);
+      duckState.minX = 20;
+      duckState.maxX = Math.max(duckState.minX + 180, decor.clientWidth - 108);
+      if (duckState.x < duckState.minX || duckState.x > duckState.maxX) {
+        duckState.x = Math.min(duckState.maxX, Math.max(duckState.minX, duckState.x));
+      }
 
-      if (duckWalkAnimation) duckWalkAnimation.cancel();
-      duckWalkAnimation = wrap.animate(
-        [
-          { offset: 0, transform: `translateX(${startX}px) scaleX(1)` },
-          { offset: 0.49, transform: `translateX(${endX}px) scaleX(1)` },
-          { offset: 0.5, transform: `translateX(${endX}px) scaleX(-1)` },
-          { offset: 0.99, transform: `translateX(${startX}px) scaleX(-1)` },
-          { offset: 1, transform: `translateX(${startX}px) scaleX(1)` }
-        ],
-        {
-          duration: 36000,
-          iterations: Infinity,
-          easing: "linear"
+      const tick = (ts) => {
+        if (!duckState.lastTs) duckState.lastTs = ts;
+        const dt = Math.min(0.05, (ts - duckState.lastTs) / 1000);
+        duckState.lastTs = ts;
+
+        if (ts >= duckState.nextMoodTs) {
+          duckState.nextMoodTs = ts + rand(900, 2500);
+          if (Math.random() < 0.22) {
+            duckState.pauseUntilTs = ts + rand(500, 1700);
+            duckState.targetSpeed = 0;
+          } else {
+            duckState.targetSpeed = rand(24, 60);
+          }
         }
-      );
+
+        const paused = ts < duckState.pauseUntilTs;
+        const goalSpeed = paused ? 0 : duckState.targetSpeed;
+        duckState.speed += (goalSpeed - duckState.speed) * Math.min(1, dt * 4.2);
+
+        duckState.x += duckState.dir * duckState.speed * dt;
+
+        if (duckState.x <= duckState.minX) {
+          duckState.x = duckState.minX;
+          duckState.dir = 1;
+          duckState.pauseUntilTs = ts + rand(400, 1300);
+        } else if (duckState.x >= duckState.maxX) {
+          duckState.x = duckState.maxX;
+          duckState.dir = -1;
+          duckState.pauseUntilTs = ts + rand(400, 1300);
+        }
+
+        const bobStrength = Math.min(1, duckState.speed / 34);
+        duckState.y = Math.sin(ts * 0.018 + duckState.x * 0.08) * 1.6 * bobStrength;
+
+        wrap.style.transform = `translate(${duckState.x}px, ${duckState.y.toFixed(2)}px)`;
+        duck.style.transform = duckState.dir >= 0 ? "scaleX(1)" : "scaleX(-1)";
+        duckRafId = window.requestAnimationFrame(tick);
+      };
+
+      if (duckRafId) window.cancelAnimationFrame(duckRafId);
+      duckState.lastTs = 0;
+      duckRafId = window.requestAnimationFrame(tick);
     }
 
     function startDuckNotes() {
@@ -737,7 +787,7 @@
       setInterval(() => {
         idx = (idx + 1) % lines.length;
         note.textContent = lines[idx];
-      }, 2800);
+      }, 7000);
     }
 
     loadEditors();
