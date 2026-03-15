@@ -361,29 +361,13 @@
     .rainbow.show{display:block}
     .butterfly{
       position:fixed;
-      width:28px;
-      height:18px;
+      width:64px;
+      height:64px;
       z-index:2;
       pointer-events:none;
+      object-fit:contain;
       animation:butterflyFlight var(--duration, 14s) linear forwards;
     }
-    .butterfly .wing{
-      position:absolute;
-      top:0;
-      width:14px;
-      height:16px;
-      background:linear-gradient(160deg,#ff9bd6,#ff6fb4);
-      border-radius:12px 12px 6px 12px;
-      box-shadow:0 0 0 1px rgba(120,40,90,.2);
-      animation:butterflyFlap .6s ease-in-out infinite;
-    }
-    .butterfly .wing.right{
-      right:0;
-      border-radius:12px 12px 12px 6px;
-      background:linear-gradient(200deg,#ffd56b,#ff9f40);
-      animation-delay:.15s;
-    }
-    .butterfly .wing.left{left:0}
     .bike-rider{
       position:fixed;
       left:-140px;
@@ -567,10 +551,6 @@
     @keyframes butterflyFlight{
       0%{transform:translate(var(--start-x), var(--start-y))}
       100%{transform:translate(var(--end-x), var(--end-y))}
-    }
-    @keyframes butterflyFlap{
-      0%,100%{transform:scaleX(1)}
-      50%{transform:scaleX(.6)}
     }
     @keyframes bikeRide{
       0%{transform:translateX(-140px);opacity:0}
@@ -943,9 +923,11 @@
     function spawnButterfly() {
       const layer = document.getElementById("skyEffects");
       if (!layer) return;
-      const butterfly = document.createElement("div");
+      const butterfly = document.createElement("img");
       butterfly.className = "butterfly";
-      butterfly.innerHTML = '<span class="wing left"></span><span class="wing right"></span>';
+      butterfly.src = "assets/butterfly.gif";
+      butterfly.alt = "";
+      butterfly.decoding = "async";
       const startX = rand(-10, 20);
       const endX = rand(70, 120);
       const startY = rand(12, 44);
