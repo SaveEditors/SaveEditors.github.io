@@ -210,26 +210,81 @@
       margin:10px 0;
       line-height:1.45;
     }
+    #editorList{
+      list-style:none;
+      padding-left:0;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+    .editor-row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:10px 12px;
+      border:1px solid rgba(180,200,220,.2);
+      border-radius:12px;
+      background:rgba(255,255,255,.04);
+    }
+    .editor-main{
+      min-width:0;
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+    }
+    .editor-link{
+      font-weight:700;
+      font-size:1rem;
+    }
+    .editor-meta{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+      text-align:right;
+    }
+    .meta-pill{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid #3b5067;
+      background:rgba(255,255,255,.06);
+      color:#d4dfeb;
+      font-size:.8rem;
+      white-space:nowrap;
+    }
+    .meta-pill a{
+      color:#cfe5ff;
+      text-decoration:none;
+      border-bottom:none;
+      font-weight:700;
+    }
+    .followers-pill{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid #3b5067;
+      background:rgba(255,255,255,.06);
+      color:#d4dfeb;
+      font-size:.8rem;
+      white-space:nowrap;
+    }
+    .followers-pill svg{
+      width:12px;
+      height:12px;
+      fill:currentColor;
+    }
     .repo-meta{
       margin-left:8px;
       color:#becce0;
       font-size:.84rem;
       white-space:nowrap;
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      flex-wrap:wrap;
-    }
-    .repo-badge{
-      display:inline-flex;
-      align-items:center;
-      text-decoration:none;
-      border-bottom:none !important;
-    }
-    .repo-badge img{
-      height:24px;
-      width:auto;
-      display:block;
     }
     .request-cta{
       margin-top:14px;
@@ -376,8 +431,8 @@
     .rainbow.show{display:block}
     .butterfly{
       position:fixed;
-      width:64px;
-      height:64px;
+      width:16px;
+      height:16px;
       z-index:2;
       pointer-events:none;
       object-fit:contain;
@@ -682,6 +737,35 @@
       return getRepoPath(repoUrl).toLowerCase() === "saveeditors/saveeditors.github.io";
     }
 
+    const followerCache = new Map();
+
+    async function fetchFollowerCount(owner) {
+      if (!owner) return "";
+      if (followerCache.has(owner)) return followerCache.get(owner);
+      const promise = (async () => {
+        try {
+          const res = await fetch(`https://api.github.com/users/${owner}`, {
+            headers: { Accept: "application/vnd.github+json" },
+            cache: "no-store"
+          });
+          if (!res.ok) return "";
+          const data = await res.json();
+          return typeof data.followers === "number" ? data.followers : "";
+        } catch {
+          return "";
+        }
+      })();
+      followerCache.set(owner, promise);
+      return promise;
+    }
+
+    function formatCount(value) {
+      if (value === "" || value == null) return "";
+      if (value >= 1000000) return `${(value / 1000000).toFixed(1).replace(/\.0$/, "")}m`;
+      if (value >= 1000) return `${(value / 1000).toFixed(1).replace(/\.0$/, "")}k`;
+      return `${value}`;
+    }
+
     async function fetchLastUpdatedDate(repoUrl) {
       const repoPath = getRepoPath(repoUrl);
       if (!repoPath) return "";
@@ -719,12 +803,17 @@
         const hydrated = await Promise.all(editors.map(async (editor) => {
           const repo = editor.repo || "";
           const play = editor.play || "";
+          const repoPath = getRepoPath(repo);
+          const owner = repoPath ? repoPath.split("/")[0] : "";
           const updated = await fetchLastUpdatedDate(repo);
+          const followers = await fetchFollowerCount(owner);
           return {
             name: editor.name || editor.slug || "Unnamed Editor",
             repo,
             play,
-            updated: updated || "Unknown"
+            updated: updated || "Unknown",
+            owner,
+            followers: followers === "" ? "" : Number(followers)
           };
         }));
 
@@ -735,17 +824,26 @@
         }
 
         list.innerHTML = hydrated.map((e) => {
-          const repoPath = getRepoPath(e.repo);
-          const owner = repoPath ? repoPath.split("/")[0] : "";
-          const badge = owner
-            ? `<a class="repo-badge" href="https://github.com/${htmlEscape(owner)}" target="_blank" rel="noopener noreferrer" title="Follow ${htmlEscape(owner)} on GitHub">
-                <img alt="followers" src="https://img.shields.io/github/followers/${htmlEscape(owner)}?color=236ad3&style=for-the-badge&logo=github&label=Follow">
-              </a>`
-            : "";
           const repoLink = e.repo && !isHomepageRepo(e.repo)
-            ? ` · <a href="${htmlEscape(e.repo)}" target="_blank" rel="noopener noreferrer">repo</a>`
+            ? `<a href="${htmlEscape(e.repo)}" target="_blank" rel="noopener noreferrer">Repo</a>`
+            : "Repo";
+          const updatedText = `Updated: ${htmlEscape(e.updated)}`;
+          const followerText = e.followers === "" ? "" : formatCount(e.followers);
+          const followersBlock = followerText
+            ? `<span class="followers-pill" title="GitHub followers for ${htmlEscape(e.owner)}">
+                 <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M10 5.5a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm-4.5 4a3.5 3.5 0 0 1 7 0v.5a.5.5 0 0 1-.5.5H6a.5.5 0 0 1-.5-.5v-.5Zm9.5 2.5a.5.5 0 0 1-.5.5h-1.58a.5.5 0 0 1 0-1H14v-.5a2.5 2.5 0 0 0-3.6-2.24.5.5 0 0 1-.44-.9A3.5 3.5 0 0 1 15 11.5v.5Z"/></svg>
+                 ${htmlEscape(followerText)}
+               </span>`
             : "";
-          return `<li><a href="${htmlEscape(e.play || e.repo || '#')}" target="_blank" rel="noopener noreferrer">${htmlEscape(e.name)}</a>${repoLink}<span class="repo-meta">Last Updated: ${htmlEscape(e.updated)} ${badge}</span></li>`;
+          return `<li class="editor-row">
+            <div class="editor-main">
+              <a class="editor-link" href="${htmlEscape(e.play || e.repo || '#')}" target="_blank" rel="noopener noreferrer">${htmlEscape(e.name)}</a>
+            </div>
+            <div class="editor-meta">
+              <span class="meta-pill">${repoLink} · ${updatedText}</span>
+              ${followersBlock}
+            </div>
+          </li>`;
         }).join("");
       } catch {
         if (quickLinks) quickLinks.innerHTML = '<span class="quick-chip ghost">Could not load editor links yet.</span>';
@@ -763,7 +861,8 @@
       maxX: 600,
       lastTs: 0,
       nextMoodTs: 0,
-      pauseUntilTs: 0
+      pauseUntilTs: 0,
+      nextTurnTs: 0
     };
 
     function rand(min, max) {
@@ -776,8 +875,8 @@
       const duck = document.querySelector(".duck");
       if (!decor || !wrap || !duck) return;
 
-      duckState.minX = 20;
-      duckState.maxX = Math.max(duckState.minX + 180, decor.clientWidth - 108);
+      duckState.minX = 50;
+      duckState.maxX = Math.max(duckState.minX + 220, decor.clientWidth - 140);
       if (duckState.x < duckState.minX || duckState.x > duckState.maxX) {
         duckState.x = Math.min(duckState.maxX, Math.max(duckState.minX, duckState.x));
       }
@@ -794,6 +893,14 @@
             duckState.targetSpeed = 0;
           } else {
             duckState.targetSpeed = rand(24, 60);
+          }
+        }
+
+        if (ts >= duckState.nextTurnTs) {
+          duckState.nextTurnTs = ts + rand(1200, 3600);
+          const edgeBuffer = 90;
+          if (duckState.x > duckState.minX + edgeBuffer && duckState.x < duckState.maxX - edgeBuffer) {
+            if (Math.random() < 0.35) duckState.dir *= -1;
           }
         }
 
