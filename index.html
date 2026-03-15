@@ -299,6 +299,12 @@
       z-index:1;
       overflow:hidden;
     }
+    .sky-effects{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:2;
+    }
     .scene{
       position:fixed;
       left:0;
@@ -318,10 +324,19 @@
       overflow:hidden;
       opacity:.9;
     }
+    .cloud-wrap{
+      position:absolute;
+      left:0;
+      top:0;
+      animation:cloudDrift var(--duration, 28s) linear infinite;
+      transform:translateX(var(--start-x, -20vw)) translateY(var(--y, 20vh));
+      animation-delay:var(--delay, 0s);
+    }
     .cloud{
       position:absolute;
       display:block;
-      height:18px;
+      width:var(--width, 90px);
+      height:var(--height, 18px);
       border-radius:999px;
       background:rgba(255,255,255,.82);
       box-shadow:
@@ -329,18 +344,60 @@
         42px -3px 0 2px rgba(255,255,255,.82),
         58px 2px 0 0 rgba(255,255,255,.72);
       filter:drop-shadow(0 2px 3px rgba(80,117,145,.2));
-      animation:cloudSway 18s ease-in-out infinite;
+      opacity:var(--opacity, .9);
+      animation:cloudSway var(--sway, 9s) ease-in-out infinite;
     }
-    .cloud-a{left:3%;top:12%;width:74px;animation-duration:31s;animation-delay:-4s}
-    .cloud-b{left:14%;top:31%;width:82px;animation-duration:38s;animation-delay:-16s}
-    .cloud-c{left:27%;top:19%;width:68px;animation-duration:34s;animation-delay:-9s}
-    .cloud-d{left:39%;top:41%;width:86px;animation-duration:42s;animation-delay:-21s}
-    .cloud-e{left:52%;top:24%;width:92px;animation-duration:36s;animation-delay:-13s}
-    .cloud-f{left:64%;top:36%;width:72px;animation-duration:40s;animation-delay:-27s}
-    .cloud-g{left:75%;top:15%;width:80px;animation-duration:35s;animation-delay:-7s}
-    .cloud-h{left:88%;top:30%;width:66px;animation-duration:39s;animation-delay:-19s}
-    .cloud-i{left:46%;top:10%;width:58px;animation-duration:33s;animation-delay:-24s}
-    .cloud-j{left:82%;top:43%;width:76px;animation-duration:37s;animation-delay:-12s}
+    .rainbow{
+      position:fixed;
+      left:10vw;
+      top:8vh;
+      width:220px;
+      height:120px;
+      opacity:0;
+      display:none;
+      filter:drop-shadow(0 6px 12px rgba(20,40,70,.18));
+      animation:rainbowDay var(--day-night-cycle) linear infinite;
+    }
+    .rainbow.show{display:block}
+    .butterfly{
+      position:fixed;
+      width:28px;
+      height:18px;
+      z-index:2;
+      pointer-events:none;
+      animation:butterflyFlight var(--duration, 14s) linear forwards;
+    }
+    .butterfly .wing{
+      position:absolute;
+      top:0;
+      width:14px;
+      height:16px;
+      background:linear-gradient(160deg,#ff9bd6,#ff6fb4);
+      border-radius:12px 12px 6px 12px;
+      box-shadow:0 0 0 1px rgba(120,40,90,.2);
+      animation:butterflyFlap .6s ease-in-out infinite;
+    }
+    .butterfly .wing.right{
+      right:0;
+      border-radius:12px 12px 12px 6px;
+      background:linear-gradient(200deg,#ffd56b,#ff9f40);
+      animation-delay:.15s;
+    }
+    .butterfly .wing.left{left:0}
+    .bike-rider{
+      position:fixed;
+      left:-140px;
+      bottom:58px;
+      width:86px;
+      height:auto;
+      z-index:3;
+      pointer-events:none;
+      opacity:0;
+      filter:drop-shadow(0 4px 6px rgba(0,0,0,.25));
+    }
+    .bike-rider.ride{
+      animation:bikeRide 12s linear forwards;
+    }
     .world-decor{
       position:absolute;
       left:0;
@@ -495,9 +552,31 @@
       box-shadow:inset 0 6px 10px rgba(255,255,255,.18);
     }
     @keyframes cloudSway{
-      0%{transform:translateX(0) translateY(0)}
-      50%{transform:translateX(38px) translateY(-4px)}
-      100%{transform:translateX(-18px) translateY(2px)}
+      0%{transform:translateX(0) translateY(0) scale(var(--scale, 1))}
+      50%{transform:translateX(38px) translateY(-4px) scale(var(--scale, 1))}
+      100%{transform:translateX(-18px) translateY(2px) scale(var(--scale, 1))}
+    }
+    @keyframes cloudDrift{
+      0%{transform:translateX(var(--start-x, -20vw)) translateY(var(--y, 20vh))}
+      100%{transform:translateX(var(--end-x, 120vw)) translateY(var(--y, 20vh))}
+    }
+    @keyframes rainbowDay{
+      0%,42%,100%{opacity:.92}
+      50%,90%{opacity:0}
+    }
+    @keyframes butterflyFlight{
+      0%{transform:translate(var(--start-x), var(--start-y))}
+      100%{transform:translate(var(--end-x), var(--end-y))}
+    }
+    @keyframes butterflyFlap{
+      0%,100%{transform:scaleX(1)}
+      50%{transform:scaleX(.6)}
+    }
+    @keyframes bikeRide{
+      0%{transform:translateX(-140px);opacity:0}
+      5%{opacity:1}
+      95%{opacity:1}
+      100%{transform:translateX(calc(100vw + 160px));opacity:0}
     }
     @keyframes nightTintCycle{
       0%,42%,100%{opacity:0}
@@ -525,18 +604,17 @@
 <body>
   <a class="kofi-widget" href="https://ko-fi.com/saveeditors" target="_blank" rel="noopener noreferrer">Buy Me A Coffee</a>
   <div class="sky-clouds" aria-hidden="true">
-    <div class="clouds">
-      <span class="cloud cloud-a"></span>
-      <span class="cloud cloud-b"></span>
-      <span class="cloud cloud-c"></span>
-      <span class="cloud cloud-d"></span>
-      <span class="cloud cloud-e"></span>
-      <span class="cloud cloud-f"></span>
-      <span class="cloud cloud-g"></span>
-      <span class="cloud cloud-h"></span>
-      <span class="cloud cloud-i"></span>
-      <span class="cloud cloud-j"></span>
-    </div>
+    <div class="clouds" id="clouds"></div>
+  </div>
+  <div class="sky-effects" id="skyEffects" aria-hidden="true">
+    <svg class="rainbow" id="rainbow" viewBox="0 0 200 110" aria-hidden="true">
+      <path d="M10,100 A90,90 0 0 1 190,100" stroke="#ff4b4b" stroke-width="10" fill="none" stroke-linecap="round"/>
+      <path d="M20,100 A80,80 0 0 1 180,100" stroke="#ff9f40" stroke-width="10" fill="none" stroke-linecap="round"/>
+      <path d="M30,100 A70,70 0 0 1 170,100" stroke="#ffe44d" stroke-width="10" fill="none" stroke-linecap="round"/>
+      <path d="M40,100 A60,60 0 0 1 160,100" stroke="#6fdc6a" stroke-width="10" fill="none" stroke-linecap="round"/>
+      <path d="M50,100 A50,50 0 0 1 150,100" stroke="#4aa3ff" stroke-width="10" fill="none" stroke-linecap="round"/>
+      <path d="M60,100 A40,40 0 0 1 140,100" stroke="#7b6dff" stroke-width="10" fill="none" stroke-linecap="round"/>
+    </svg>
   </div>
   <main class="page">
     <section class="sheet">
@@ -568,7 +646,7 @@
     </section>
   </main>
 
-    <div class="scene" aria-hidden="true">
+  <div class="scene" aria-hidden="true">
     <div class="world-decor">
       <span class="bush bush-a"></span>
       <span class="duck-wrap">
@@ -583,6 +661,7 @@
     <div class="grass"></div>
     <div class="stone"></div>
   </div>
+  <img class="bike-rider" id="bikeRider" src="assets/bike-rider.gif" alt="" aria-hidden="true">
 
   <script>
     "use strict";
@@ -812,10 +891,113 @@
       }, 7000);
     }
 
+    function buildClouds() {
+      const clouds = document.getElementById("clouds");
+      if (!clouds) return;
+      clouds.innerHTML = "";
+      const count = Math.min(18, Math.max(12, Math.round(window.innerWidth / 120)));
+      for (let i = 0; i < count; i++) {
+        const wrap = document.createElement("span");
+        wrap.className = "cloud-wrap";
+        const cloud = document.createElement("span");
+        cloud.className = "cloud";
+
+        const width = rand(60, 150);
+        const height = rand(14, 26);
+        const scale = rand(0.8, 1.5);
+        const opacity = rand(0.55, 0.95);
+        const startX = rand(-30, 15);
+        const endX = rand(110, 160);
+        const y = rand(6, 46);
+        const duration = rand(18, 34);
+        const delay = rand(-duration, 0);
+        const sway = rand(7, 14);
+
+        wrap.style.setProperty("--start-x", `${startX}vw`);
+        wrap.style.setProperty("--end-x", `${endX}vw`);
+        wrap.style.setProperty("--y", `${y}vh`);
+        wrap.style.setProperty("--duration", `${duration}s`);
+        wrap.style.setProperty("--delay", `${delay}s`);
+        cloud.style.setProperty("--width", `${width}px`);
+        cloud.style.setProperty("--height", `${height}px`);
+        cloud.style.setProperty("--scale", `${scale}`);
+        cloud.style.setProperty("--opacity", `${opacity}`);
+        cloud.style.setProperty("--sway", `${sway}s`);
+
+        wrap.appendChild(cloud);
+        clouds.appendChild(wrap);
+      }
+    }
+
+    function setupRainbow() {
+      const rainbow = document.getElementById("rainbow");
+      if (!rainbow) return;
+      if (Math.random() < 0.1) {
+        rainbow.classList.add("show");
+        rainbow.style.left = `${rand(6, 60)}vw`;
+        rainbow.style.top = `${rand(6, 18)}vh`;
+        rainbow.style.transform = `scale(${rand(0.75, 1.15)})`;
+      }
+    }
+
+    function spawnButterfly() {
+      const layer = document.getElementById("skyEffects");
+      if (!layer) return;
+      const butterfly = document.createElement("div");
+      butterfly.className = "butterfly";
+      butterfly.innerHTML = '<span class="wing left"></span><span class="wing right"></span>';
+      const startX = rand(-10, 20);
+      const endX = rand(70, 120);
+      const startY = rand(12, 44);
+      const endY = Math.max(6, Math.min(50, startY + rand(-10, 10)));
+      const duration = rand(10, 18);
+      butterfly.style.setProperty("--start-x", `${startX}vw`);
+      butterfly.style.setProperty("--start-y", `${startY}vh`);
+      butterfly.style.setProperty("--end-x", `${endX}vw`);
+      butterfly.style.setProperty("--end-y", `${endY}vh`);
+      butterfly.style.setProperty("--duration", `${duration}s`);
+      layer.appendChild(butterfly);
+      setTimeout(() => butterfly.remove(), duration * 1000 + 600);
+    }
+
+    function startButterflies() {
+      const loop = () => {
+        const delay = rand(18000, 32000);
+        setTimeout(() => {
+          if (Math.random() < 0.6) spawnButterfly();
+          loop();
+        }, delay);
+      };
+      loop();
+    }
+
+    function startBikeRider() {
+      const bike = document.getElementById("bikeRider");
+      if (!bike) return;
+      const ride = () => {
+        bike.classList.remove("ride");
+        void bike.offsetWidth;
+        bike.classList.add("ride");
+      };
+      setTimeout(ride, 4000);
+      setInterval(ride, 90000);
+    }
+
     loadEditors();
+    buildClouds();
     startDuckWalk();
     startDuckNotes();
-    window.addEventListener("resize", startDuckWalk);
+    setupRainbow();
+    startButterflies();
+    startBikeRider();
+    let resizeTimer = 0;
+    window.addEventListener("resize", () => {
+      window.clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(() => {
+        buildClouds();
+        startDuckWalk();
+      }, 160);
+    });
   </script>
 </body>
 </html>
