@@ -1,5 +1,19 @@
 [
   {
+    "name": "High On Life 2 - Save Editor",
+    "slug": "high-on-life-2-save-editor",
+    "repo": "https://github.com/SaveEditors/high-on-life-2-save-editor",
+    "play": "https://saveeditors.github.io/high-on-life-2-save-editor/",
+    "summary": "Edit Pesos, checkpoints, and DictionaryRaw progression flags from High On Life 2 GVAS saves.",
+    "tags": [
+      "High On Life 2",
+      "Steam",
+      "Game Pass",
+      "GVAS",
+      "Save Editor"
+    ]
+  },
+  {
     "name": "Minecraft Dungeons - Save Editor",
     "slug": "minecraft-dungeons-save-editor",
     "repo": "https://github.com/SaveEditors/minecraft-dungeons-save-editor",
