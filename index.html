@@ -137,6 +137,10 @@
       color:#d8e5f3;
       animation:caretBlink 1s steps(2, start) infinite;
     }
+    .type-caret.done{
+      opacity:0;
+      animation:none;
+    }
     .lead{
       margin:0;
       color:#c8d6e6;
@@ -1100,6 +1104,7 @@
 
     function startTypewriter() {
       const el = document.getElementById("leadText");
+      const caret = document.querySelector(".type-caret");
       if (!el) return;
       const text = el.dataset.fulltext || "";
       el.textContent = "";
@@ -1107,10 +1112,18 @@
       const durationMs = 6000;
       const interval = Math.max(15, Math.floor(durationMs / text.length));
       let idx = 0;
+      const hideCaret = () => {
+        if (caret) caret.classList.add("done");
+      };
+      const safetyHide = window.setTimeout(hideCaret, durationMs + 3000);
       const timer = setInterval(() => {
         idx += 1;
         el.textContent = text.slice(0, idx);
-        if (idx >= text.length) clearInterval(timer);
+        if (idx >= text.length) {
+          clearInterval(timer);
+          window.clearTimeout(safetyHide);
+          window.setTimeout(hideCaret, 3000);
+        }
       }, interval);
     }
 
