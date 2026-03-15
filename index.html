@@ -96,6 +96,10 @@
       gap:10px;
       align-items:start;
     }
+    .side-stack{
+      display:grid;
+      gap:10px;
+    }
     .sheet{
       border:1px solid #2a3949;
       border-radius:16px;
@@ -601,18 +605,28 @@
             <li>Loading editors...</li>
           </ul>
         </section>
-        <section class="sheet">
-          <div class="request-cta">
-            <span class="request-cta-label">Need another save editor?</span>
-            <p class="request-cta-note">Drop the game name, platform, and save-file type so we can queue it faster. If you enjoy the save editors and want to support future development, consider buying Duck a coffee.</p>
-            <div class="cta-actions">
-              <a class="request-cta-link" href="https://whispermeter.com/message-box/15b6ac70-9113-4e9c-b629-423f335c7e07" target="_blank" rel="noopener noreferrer">
-                Submit a Save Editor Request
-              </a>
-              <a class="support-cta-link" href="https://ko-fi.com/saveeditors" target="_blank" rel="noopener noreferrer">Buy Duck a Coffee</a>
+        <div class="side-stack">
+          <section class="sheet">
+            <div class="request-cta">
+              <span class="request-cta-label">Need another save editor?</span>
+              <p class="request-cta-note">Drop the game name, platform, and save-file type so we can queue it faster.</p>
+              <div class="cta-actions">
+                <a class="request-cta-link" href="https://whispermeter.com/message-box/15b6ac70-9113-4e9c-b629-423f335c7e07" target="_blank" rel="noopener noreferrer">
+                  Submit a Save Editor Request
+                </a>
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
+          <section class="sheet">
+            <div class="request-cta">
+              <span class="request-cta-label">Fuel the Duck</span>
+              <p class="request-cta-note">If you enjoy the save editors and want to support future development, consider buying Duck a coffee.</p>
+              <div class="cta-actions">
+                <a class="support-cta-link" href="https://ko-fi.com/saveeditors" target="_blank" rel="noopener noreferrer">Buy Duck a Coffee</a>
+              </div>
+            </div>
+          </section>
+        </div>
       </div>
     </div>
   </main>
