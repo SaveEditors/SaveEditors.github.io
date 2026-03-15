@@ -290,11 +290,18 @@
       min-width:0;
       display:flex;
       flex-direction:column;
-      gap:4px;
+      gap:8px;
     }
     .editor-link{
       font-weight:700;
       font-size:.9rem;
+    }
+    .editor-name-hr{
+      width:50%;
+      height:0;
+      margin:0;
+      border:0;
+      border-top:1px solid rgba(180,200,220,.28);
     }
     .editor-actions{
       display:flex;
@@ -1040,6 +1047,7 @@
           return `<li class="editor-row">
             <div class="editor-main">
               <div class="editor-link">${htmlEscape(e.name)}</div>
+              <hr class="editor-name-hr" aria-hidden="true">
               ${actions}
             </div>
             <div class="editor-meta">
