@@ -169,6 +169,9 @@
       gap:6px;
       columns:2;
       column-gap:16px;
+      max-height:320px;
+      overflow-y:auto;
+      padding-right:6px;
     }
     .editor-row{
       display:flex;
@@ -715,7 +718,7 @@
       return getRepoPath(repoUrl).toLowerCase() === "saveeditors/saveeditors.github.io";
     }
 
-    const updatedCacheKey = "saveeditors-updated-v1";
+    const updatedCacheKey = "saveeditors-updated-v2";
     const updatedCacheTtlMs = 6 * 60 * 60 * 1000;
 
     function readUpdatedCache() {
@@ -736,31 +739,32 @@
 
     async function fetchLastUpdatedDate(repoUrl, fallback) {
       const repoPath = getRepoPath(repoUrl);
-      if (!repoPath) return "";
+      if (!repoPath) return { date: fallback || "", ts: 0 };
       const cache = readUpdatedCache();
       const cached = cache[repoPath];
-      if (cached && cached.date && Date.now() - cached.ts < updatedCacheTtlMs) {
-        return cached.date;
+      if (cached && cached.date && cached.updatedTs && Date.now() - cached.ts < updatedCacheTtlMs) {
+        return { date: cached.date, ts: cached.updatedTs };
       }
       try {
         const res = await fetch(`https://api.github.com/repos/${repoPath}`, {
           headers: { Accept: "application/vnd.github+json" },
           cache: "no-store"
         });
-        if (!res.ok) return fallback || "";
+        if (!res.ok) return { date: fallback || "", ts: 0 };
         const repo = await res.json();
         const iso = repo?.pushed_at || "";
-        if (!iso) return "";
-        const date = new Date(iso).toLocaleDateString(undefined, {
+        if (!iso) return { date: fallback || "", ts: 0 };
+        const updatedTs = Date.parse(iso) || 0;
+        const date = new Date(updatedTs || iso).toLocaleDateString(undefined, {
           year: "numeric",
           month: "short",
           day: "numeric"
         });
-        cache[repoPath] = { date, ts: Date.now() };
+        cache[repoPath] = { date, ts: Date.now(), updatedTs };
         writeUpdatedCache(cache);
-        return date;
+        return { date, ts: updatedTs };
       } catch {
-        return fallback || "";
+        return { date: fallback || "", ts: 0 };
       }
     }
 
@@ -783,11 +787,13 @@
             name: editor.name || editor.slug || "Unnamed Editor",
             repo,
             play,
-            updated: updated || "",
+            updated: updated.date || "",
+            updatedTs: updated.ts || 0,
             repoPath
           };
         }));
 
+        hydrated.sort((a, b) => (b.updatedTs || 0) - (a.updatedTs || 0));
         list.innerHTML = hydrated.map((e) => {
           const updatedText = e.updated ? `Updated: ${htmlEscape(e.updated)}` : "";
           const liveLink = e.play
