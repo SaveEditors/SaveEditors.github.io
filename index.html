@@ -665,20 +665,23 @@
       100%{transform:translateX(calc(100vw + 160px));opacity:0}
     }
     @keyframes nightTintCycle{
-      0%,42%,100%{opacity:0}
-      50%,90%{opacity:1}
+      0%,32%{opacity:0}
+      50%,82%{opacity:1}
+      100%{opacity:0}
     }
     @keyframes nightStarsCycle{
-      0%,42%,100%{opacity:0}
-      50%,90%{opacity:.92}
+      0%,32%{opacity:0}
+      50%,82%{opacity:.92}
+      100%{opacity:0}
     }
     @keyframes starTwinkle{
       0%,100%{filter:brightness(1)}
       50%{filter:brightness(1.25)}
     }
     @keyframes nightPurpleCycle{
-      0%,42%,100%{opacity:0}
-      50%,90%{opacity:.75}
+      0%,32%{opacity:0}
+      50%,82%{opacity:.75}
+      100%{opacity:0}
     }
     @keyframes dawnCycle{
       0%{opacity:0}
@@ -1103,7 +1106,7 @@
         const endX = rand(120, 180);
         const y = rand(6, 46);
         const duration = baseDuration * (i % 2 === 0 ? 1 : 1.01);
-        const delay = rand(0, 6);
+        const delay = -rand(0, baseDuration);
 
         wrap.style.setProperty("--start-x", `${startX}vw`);
         wrap.style.setProperty("--end-x", `${endX}vw`);
