@@ -678,25 +678,52 @@
       return getRepoPath(repoUrl).toLowerCase() === "saveeditors/saveeditors.github.io";
     }
 
-    async function fetchLastUpdatedDate(repoUrl) {
+    const updatedCacheKey = "saveeditors-updated-v1";
+    const updatedCacheTtlMs = 6 * 60 * 60 * 1000;
+
+    function readUpdatedCache() {
+      try {
+        return JSON.parse(localStorage.getItem(updatedCacheKey) || "{}") || {};
+      } catch {
+        return {};
+      }
+    }
+
+    function writeUpdatedCache(cache) {
+      try {
+        localStorage.setItem(updatedCacheKey, JSON.stringify(cache));
+      } catch {
+        // ignore cache failures
+      }
+    }
+
+    async function fetchLastUpdatedDate(repoUrl, fallback) {
       const repoPath = getRepoPath(repoUrl);
       if (!repoPath) return "";
+      const cache = readUpdatedCache();
+      const cached = cache[repoPath];
+      if (cached && cached.date && Date.now() - cached.ts < updatedCacheTtlMs) {
+        return cached.date;
+      }
       try {
-        const res = await fetch(`https://api.github.com/repos/${repoPath}/commits?per_page=1`, {
+        const res = await fetch(`https://api.github.com/repos/${repoPath}`, {
           headers: { Accept: "application/vnd.github+json" },
           cache: "no-store"
         });
-        if (!res.ok) return "";
-        const commits = await res.json();
-        const iso = commits?.[0]?.commit?.committer?.date || commits?.[0]?.commit?.author?.date || "";
+        if (!res.ok) return fallback || "";
+        const repo = await res.json();
+        const iso = repo?.pushed_at || "";
         if (!iso) return "";
-        return new Date(iso).toLocaleDateString(undefined, {
+        const date = new Date(iso).toLocaleDateString(undefined, {
           year: "numeric",
           month: "short",
           day: "numeric"
         });
+        cache[repoPath] = { date, ts: Date.now() };
+        writeUpdatedCache(cache);
+        return date;
       } catch {
-        return "";
+        return fallback || "";
       }
     }
 
@@ -714,18 +741,18 @@
           const repo = editor.repo || "";
           const play = editor.play || "";
           const repoPath = getRepoPath(repo);
-          const updated = await fetchLastUpdatedDate(repo);
+          const updated = await fetchLastUpdatedDate(repo, editor.updated || "");
           return {
             name: editor.name || editor.slug || "Unnamed Editor",
             repo,
             play,
-            updated: updated || "Unknown",
+            updated: updated || "",
             repoPath
           };
         }));
 
         list.innerHTML = hydrated.map((e) => {
-          const updatedText = `Updated: ${htmlEscape(e.updated)}`;
+          const updatedText = e.updated ? `Updated: ${htmlEscape(e.updated)}` : "";
           const liveLink = e.play
             ? `<a class="editor-action" href="${htmlEscape(e.play)}" target="_blank" rel="noopener noreferrer">Live Editor</a>`
             : "";
@@ -735,13 +762,14 @@
           const actions = (liveLink || repoButton)
             ? `<div class="editor-actions">${liveLink}${repoButton}</div>`
             : "";
+          const updatedPill = updatedText ? `<span class="meta-pill">${updatedText}</span>` : "";
           return `<li class="editor-row">
             <div class="editor-main">
               <a class="editor-link" href="${htmlEscape(e.play || e.repo || '#')}" target="_blank" rel="noopener noreferrer">${htmlEscape(e.name)}</a>
               ${actions}
             </div>
             <div class="editor-meta">
-              <span class="meta-pill">${updatedText}</span>
+              ${updatedPill}
             </div>
           </li>`;
         }).join("");
