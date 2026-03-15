@@ -792,6 +792,204 @@
     @media (min-width:1080px){
       #editorList{columns:3}
     }
+
+    /* ============================================================
+       SaveEditors Feedback Widget (scoped)
+       - Floating action button (Crimson + Slate)
+       - Modal overlay with backdrop blur
+       - Embedded iframe: https://whispermeter.com/feedback/SaveEditors
+       ============================================================ */
+    #sefb-root{
+      position:fixed;
+      right:18px;
+      bottom:18px;
+      z-index:2147483000;
+      font-family:ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:#0e1922;
+    }
+    #sefb-root .sefb-fab{
+      appearance:none;
+      position:relative;
+      border:1px solid rgba(255,255,255,.18);
+      border-radius:999px;
+      padding:12px 14px;
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      cursor:pointer;
+      color:#ffffff;
+      background:linear-gradient(180deg, #b32036 0%, #8f1527 100%);
+      box-shadow:
+        0 14px 28px rgba(0,0,0,.22),
+        0 2px 0 rgba(255,255,255,.16) inset,
+        0 -2px 0 rgba(0,0,0,.14) inset;
+      transition:transform .3s ease-in-out, box-shadow .3s ease-in-out, filter .3s ease-in-out;
+      user-select:none;
+      -webkit-tap-highlight-color:transparent;
+    }
+    #sefb-root .sefb-fab:hover{
+      transform:translateY(-3px);
+      filter:saturate(1.04);
+      box-shadow:
+        0 18px 40px rgba(0,0,0,.26),
+        0 2px 0 rgba(255,255,255,.18) inset,
+        0 -2px 0 rgba(0,0,0,.14) inset;
+    }
+    #sefb-root .sefb-fab:active{
+      transform:translateY(-1px);
+      box-shadow:
+        0 12px 22px rgba(0,0,0,.22),
+        0 2px 0 rgba(255,255,255,.14) inset,
+        0 -2px 0 rgba(0,0,0,.16) inset;
+    }
+    #sefb-root .sefb-fab:focus-visible{
+      outline:3px solid rgba(165,28,48,.35);
+      outline-offset:4px;
+    }
+    #sefb-root .sefb-fabIcon{
+      width:26px;
+      height:26px;
+      display:grid;
+      place-items:center;
+      border-radius:10px;
+      background:rgba(255,255,255,.12);
+      border:1px solid rgba(255,255,255,.18);
+      box-shadow:0 1px 0 rgba(0,0,0,.18) inset;
+      flex:0 0 auto;
+      font-weight:800;
+      letter-spacing:.02em;
+      line-height:1;
+    }
+    #sefb-root .sefb-fabLabel{
+      font-weight:700;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      font-size:12px;
+      line-height:1;
+      white-space:nowrap;
+    }
+
+    #sefb-root .sefb-overlay[hidden]{display:none !important;}
+    #sefb-root .sefb-overlay{
+      position:fixed;
+      inset:0;
+      z-index:2147483100;
+      display:grid;
+      grid-template-areas:"stack";
+      padding:24px;
+      opacity:0;
+      transition:opacity .25s ease;
+    }
+    #sefb-root .sefb-overlay.sefb-open{opacity:1;}
+    #sefb-root .sefb-scrim{
+      grid-area:stack;
+      background:rgba(14,25,34,.42);
+      backdrop-filter:blur(8px);
+      -webkit-backdrop-filter:blur(8px);
+    }
+    @supports not ((backdrop-filter: blur(8px)) or (-webkit-backdrop-filter: blur(8px))){
+      #sefb-root .sefb-scrim{background:rgba(14,25,34,.62);}
+    }
+    #sefb-root .sefb-panel{
+      grid-area:stack;
+      align-self:center;
+      justify-self:center;
+      width:min(980px, calc(100vw - 48px));
+      height:min(720px, calc(100vh - 48px));
+      background:rgba(255,255,255,.98);
+      border:1px solid rgba(47,58,69,.18);
+      border-radius:18px;
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      box-shadow:0 30px 70px rgba(0,0,0,.28);
+      transform:translateY(10px) scale(.99);
+      opacity:0;
+      transition:transform .25s ease, opacity .25s ease;
+    }
+    #sefb-root .sefb-overlay.sefb-open .sefb-panel{
+      transform:translateY(0) scale(1);
+      opacity:1;
+    }
+    #sefb-root .sefb-header{
+      position:relative;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:14px 14px 14px 16px;
+      background:linear-gradient(180deg, #ffffff 0%, #fbfbfd 100%);
+      border-bottom:1px solid rgba(47,58,69,.14);
+    }
+    #sefb-root .sefb-header:before{
+      content:"";
+      position:absolute;
+      left:0;
+      top:0;
+      bottom:0;
+      width:4px;
+      background:#A51C30;
+    }
+    #sefb-root .sefb-title{
+      margin:0;
+      font-weight:800;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      font-size:13px;
+      color:#0e1922;
+    }
+    #sefb-root .sefb-close{
+      appearance:none;
+      border:1px solid rgba(47,58,69,.16);
+      background:transparent;
+      color:#2f3a45;
+      border-radius:12px;
+      width:38px;
+      height:38px;
+      cursor:pointer;
+      display:grid;
+      place-items:center;
+      transition:background .2s ease, transform .2s ease;
+      -webkit-tap-highlight-color:transparent;
+    }
+    #sefb-root .sefb-close:hover{background:rgba(47,58,69,.06);}
+    #sefb-root .sefb-close:active{transform:scale(.98);}
+    #sefb-root .sefb-close:focus-visible{
+      outline:3px solid rgba(165,28,48,.28);
+      outline-offset:3px;
+    }
+    #sefb-root .sefb-body{
+      flex:1 1 auto;
+      background:#ffffff;
+    }
+    #sefb-root .sefb-iframe{
+      width:100%;
+      height:100%;
+      border:0;
+      background:#ffffff;
+    }
+
+    /* Mobile UX: full-screen modal */
+    @media (max-width:640px){
+      #sefb-root{right:14px;bottom:14px;}
+      #sefb-root .sefb-overlay{padding:0;}
+      #sefb-root .sefb-panel{
+        width:100vw;
+        height:100vh;
+        border-radius:0;
+        border-left:0;
+        border-right:0;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      #sefb-root .sefb-fab,
+      #sefb-root .sefb-overlay,
+      #sefb-root .sefb-panel,
+      #sefb-root .sefb-close{transition:none !important;}
+      #sefb-root .sefb-fab:hover,
+      #sefb-root .sefb-panel{transform:none !important;}
+    }
   </style>
 </head>
 <body>
@@ -1396,6 +1594,104 @@
         startDuckWalk();
       }, 160);
     });
+  </script>
+
+  <!-- SaveEditors Feedback Widget (drop-in; scoped styles + vanilla JS) -->
+  <div id="sefb-root">
+    <button
+      id="sefb-button"
+      class="sefb-fab"
+      type="button"
+      aria-haspopup="dialog"
+      aria-controls="sefb-modal"
+      aria-expanded="false"
+      aria-label="Open official feedback form"
+    >
+      <span class="sefb-fabIcon" aria-hidden="true">SE</span>
+      <span class="sefb-fabLabel">Feedback</span>
+    </button>
+
+    <div
+      id="sefb-modal"
+      class="sefb-overlay"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="sefb-title"
+      hidden
+    >
+      <div class="sefb-scrim" data-sefb-close aria-hidden="true"></div>
+      <section class="sefb-panel" role="document">
+        <header class="sefb-header">
+          <h2 id="sefb-title" class="sefb-title">SAVEDITORS OFFICIAL FEEDBACK</h2>
+          <button class="sefb-close" type="button" data-sefb-close aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </header>
+        <div class="sefb-body">
+          <iframe
+            class="sefb-iframe"
+            title="SaveEditors feedback"
+            src="https://whispermeter.com/feedback/SaveEditors"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+          ></iframe>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    // SaveEditors Feedback Widget (minimal, accessible, non-invasive).
+    (() => {
+      const root = document.getElementById("sefb-root");
+      if (!root) return;
+
+      const openButton = document.getElementById("sefb-button");
+      const overlay = document.getElementById("sefb-modal");
+      const closeTargets = root.querySelectorAll("[data-sefb-close]");
+      const closeButton = root.querySelector(".sefb-close");
+
+      let lastFocusedEl = null;
+      let closeTimer = 0;
+
+      const isOpen = () => overlay && !overlay.hasAttribute("hidden");
+
+      const open = () => {
+        if (!overlay || isOpen()) return;
+        lastFocusedEl = (document.activeElement instanceof HTMLElement) ? document.activeElement : openButton;
+
+        overlay.removeAttribute("hidden");
+        // Ensure the opening transition runs.
+        window.requestAnimationFrame(() => overlay.classList.add("sefb-open"));
+        openButton?.setAttribute("aria-expanded", "true");
+
+        document.addEventListener("keydown", onKeyDown, true);
+        closeButton?.focus({ preventScroll: true });
+      };
+
+      const close = () => {
+        if (!overlay || !isOpen()) return;
+        overlay.classList.remove("sefb-open");
+        openButton?.setAttribute("aria-expanded", "false");
+
+        document.removeEventListener("keydown", onKeyDown, true);
+
+        window.clearTimeout(closeTimer);
+        closeTimer = window.setTimeout(() => {
+          overlay.setAttribute("hidden", "");
+          lastFocusedEl?.focus?.({ preventScroll: true });
+        }, 260);
+      };
+
+      const onKeyDown = (e) => {
+        if (e.key !== "Escape") return;
+        e.preventDefault();
+        close();
+      };
+
+      openButton?.addEventListener("click", open);
+      closeTargets.forEach((el) => el.addEventListener("click", close));
+    })();
   </script>
 </body>
 </html>
