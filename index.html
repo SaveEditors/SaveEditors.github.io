@@ -169,7 +169,7 @@
       color:#eaf2fb;
     }
     .editor-card{
-      min-height:125%;
+      min-height:0;
     }
     .title-link{
       display:inline-flex;
@@ -232,8 +232,8 @@
       columns:2;
       column-gap:16px;
       --row-height:48px;
-      max-height:calc(var(--row-height) * 5 + 30px);
-      overflow-y:auto;
+      max-height:none;
+      overflow:visible;
       padding-right:6px;
       scrollbar-width:thin;
       scrollbar-color:rgba(180,200,220,.5) transparent;
