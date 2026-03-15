@@ -618,7 +618,7 @@
             <span>SaveEditors</span>
           </a>
         </h1>
-        <p class="lead">Welcome to my profile. This is a collection of save editors I've made. Primarily tested with the Windows Xbox Game Pass versions.</p>
+        <p class="lead" id="leadText" data-fulltext="Welcome to my profile. This is a collection of save editors I've made. Primarily tested with the Windows Xbox Game Pass versions."></p>
       </section>
       <div class="card-row">
         <section class="sheet">
@@ -1081,11 +1081,28 @@
       setInterval(ride, 150000);
     }
 
+    function startTypewriter() {
+      const el = document.getElementById("leadText");
+      if (!el) return;
+      const text = el.dataset.fulltext || "";
+      el.textContent = "";
+      if (!text) return;
+      const durationMs = 6000;
+      const interval = Math.max(15, Math.floor(durationMs / text.length));
+      let idx = 0;
+      const timer = setInterval(() => {
+        idx += 1;
+        el.textContent = text.slice(0, idx);
+        if (idx >= text.length) clearInterval(timer);
+      }, interval);
+    }
+
 
     loadEditors();
     buildClouds();
     startDuckWalk();
     startDuckNotes();
+    startTypewriter();
     startButterflyCycle();
     startBikeRider();
     let resizeTimer = 0;
