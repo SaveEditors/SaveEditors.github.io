@@ -169,7 +169,8 @@
       gap:6px;
       columns:2;
       column-gap:16px;
-      max-height:320px;
+      --row-height:56px;
+      max-height:calc(var(--row-height) * 5 + 24px);
       overflow-y:auto;
       padding-right:6px;
     }
@@ -179,6 +180,7 @@
       justify-content:space-between;
       gap:10px;
       padding:6px 8px;
+      min-height:var(--row-height);
       border:1px solid rgba(180,200,220,.2);
       border-radius:12px;
       background:rgba(255,255,255,.04);
