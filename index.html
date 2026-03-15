@@ -215,6 +215,21 @@
       color:#becce0;
       font-size:.84rem;
       white-space:nowrap;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+    .repo-badge{
+      display:inline-flex;
+      align-items:center;
+      text-decoration:none;
+      border-bottom:none !important;
+    }
+    .repo-badge img{
+      height:24px;
+      width:auto;
+      display:block;
     }
     .request-cta{
       margin-top:14px;
@@ -720,10 +735,17 @@
         }
 
         list.innerHTML = hydrated.map((e) => {
+          const repoPath = getRepoPath(e.repo);
+          const owner = repoPath ? repoPath.split("/")[0] : "";
+          const badge = owner
+            ? `<a class="repo-badge" href="https://github.com/${htmlEscape(owner)}" target="_blank" rel="noopener noreferrer" title="Follow ${htmlEscape(owner)} on GitHub">
+                <img alt="followers" src="https://img.shields.io/github/followers/${htmlEscape(owner)}?color=236ad3&style=for-the-badge&logo=github&label=Follow">
+              </a>`
+            : "";
           const repoLink = e.repo && !isHomepageRepo(e.repo)
             ? ` · <a href="${htmlEscape(e.repo)}" target="_blank" rel="noopener noreferrer">repo</a>`
             : "";
-          return `<li><a href="${htmlEscape(e.play || e.repo || '#')}" target="_blank" rel="noopener noreferrer">${htmlEscape(e.name)}</a>${repoLink}<span class="repo-meta">Last Updated: ${htmlEscape(e.updated)}</span></li>`;
+          return `<li><a href="${htmlEscape(e.play || e.repo || '#')}" target="_blank" rel="noopener noreferrer">${htmlEscape(e.name)}</a>${repoLink}<span class="repo-meta">Last Updated: ${htmlEscape(e.updated)} ${badge}</span></li>`;
         }).join("");
       } catch {
         if (quickLinks) quickLinks.innerHTML = '<span class="quick-chip ghost">Could not load editor links yet.</span>';
