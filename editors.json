@@ -67,5 +67,20 @@
       "Progress",
       "Fog of War"
     ]
+  },
+  {
+    "name": "Trading Card Shop Simulator - Save Editor",
+    "slug": "trading-card-simulator-save-editor",
+    "repo": "https://github.com/SaveEditors/trading-card-simulator-save-editor",
+    "play": "https://saveeditors.github.io/trading-card-simulator-save-editor/",
+    "summary": "Edit coins, shop progression, item totals/prices, binder progress, and unlock flags from Trading Card Shop Simulator saves.",
+    "tags": [
+      "Trading Card Shop Simulator",
+      "Steam",
+      "Game Pass",
+      "WGS",
+      "JSON",
+      "Save Editor"
+    ]
   }
 ]
