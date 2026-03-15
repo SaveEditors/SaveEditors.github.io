@@ -41,13 +41,13 @@
     ]
   },
   {
-    "name": "Swordhaven - Save Editor",
+    "name": "Swordhaven - Iron Conspiracy - Save Editor",
     "slug": "swordhaven-save-editor",
     "repo": "https://github.com/SaveEditors/swordhaven-save-editor",
     "play": "https://saveeditors.github.io/swordhaven-save-editor/",
-    "summary": "Edit Swordhaven save archives and Progress data with structured controls, inventory operations, and map-state tools.",
+    "summary": "Edit Swordhaven - Iron Conspiracy save archives and Progress data with structured controls, inventory operations, and map-state tools.",
     "tags": [
-      "Swordhaven",
+      "Swordhaven - Iron Conspiracy",
       "Unity",
       "Archive",
       "Progress",
