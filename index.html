@@ -595,8 +595,7 @@
     @keyframes birdFly{
       0%{transform:translateX(110vw) translateY(var(--bird-y, 12vh)) scale(var(--bird-scale, 1));opacity:0}
       6%{opacity:1}
-      94%{opacity:1}
-      100%{transform:translateX(-30vw) translateY(var(--bird-y, 12vh)) scale(var(--bird-scale, 1));opacity:0}
+      100%{transform:translateX(-30vw) translateY(var(--bird-y, 12vh)) scale(var(--bird-scale, 1));opacity:1}
     }
     @keyframes nightTintCycle{
       0%,42%,100%{opacity:0}
@@ -1039,20 +1038,24 @@
       layer.appendChild(butterfly);
       butterflyEl = butterfly;
 
-      const startX = rand(6, 68);
-      const midX = rand(18, 82);
-      const endX = rand(110, 140);
+      const startX = rand(10, 28);
       const startY = rand(12, 42);
-      const midY = Math.max(6, Math.min(48, startY + rand(-8, 8)));
+      const endX = rand(110, 140);
       const endY = Math.max(6, Math.min(50, startY + rand(-6, 6)));
       const leaveLeadMs = 15000;
-      const exitOffset = Math.max(0, Math.min(1, (durationMs - leaveLeadMs) / durationMs));
+      const exitOffsetRaw = (durationMs - leaveLeadMs) / durationMs;
+      const exitOffset = Math.max(0.6, Math.min(0.92, exitOffsetRaw));
+      const hops = 7;
+      const keyframes = [{ transform: `translate(${startX}vw, ${startY}vh)`, offset: 0 }];
+      for (let i = 1; i <= hops; i++) {
+        const t = (i / (hops + 1)) * exitOffset;
+        const x = i % 2 === 0 ? rand(10, 28) : rand(64, 88);
+        const y = Math.max(6, Math.min(50, startY + rand(-10, 10)));
+        keyframes.push({ transform: `translate(${x}vw, ${y}vh)`, offset: t });
+      }
+      keyframes.push({ transform: `translate(${endX}vw, ${endY}vh)`, offset: 1 });
 
-      butterflyAnim = butterfly.animate([
-        { transform: `translate(${startX}vw, ${startY}vh)` },
-        { transform: `translate(${midX}vw, ${midY}vh)`, offset: exitOffset },
-        { transform: `translate(${endX}vw, ${endY}vh)` }
-      ], {
+      butterflyAnim = butterfly.animate(keyframes, {
         duration: durationMs,
         easing: "ease-in-out",
         fill: "forwards"
