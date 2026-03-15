@@ -43,7 +43,7 @@
   {
     "name": "Swordhaven - Save Editor",
     "slug": "swordhaven-save-editor",
-    "repo": "https://github.com/SaveEditors/SaveEditors.github.io/tree/main/swordhaven-save-editor",
+    "repo": "https://github.com/SaveEditors/swordhaven-save-editor",
     "play": "https://saveeditors.github.io/swordhaven-save-editor/",
     "summary": "Edit Swordhaven save archives and Progress data with structured controls, inventory operations, and map-state tools.",
     "tags": [
