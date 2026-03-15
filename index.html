@@ -6,7 +6,7 @@
   <title>SaveEditors</title>
   <style>
     :root{
-      --day-night-cycle:35s;
+      --day-night-cycle:65s;
       --bg:#bfe7ff;
       --sky-top:#def3ff;
       --sky-bottom:#b7e2ff;
@@ -24,7 +24,7 @@
       --stone-c:#aeb5bc;
     }
     *{box-sizing:border-box}
-    html,body{height:100%}
+    html,body{height:100%;overflow:hidden}
     body{
       margin:0;
       font-family:Segoe UI, system-ui, -apple-system, Arial, sans-serif;
@@ -36,7 +36,7 @@
         radial-gradient(190px 90px at 74% 12%, rgba(255,255,255,.7), rgba(255,255,255,0) 76%),
         linear-gradient(180deg, var(--sky-top), var(--sky-bottom) 62%, var(--bg));
       background-size:28px 28px,28px 28px,auto,auto,auto;
-      overflow-x:hidden;
+      overflow:hidden;
     }
     body:before{
       content:"";
@@ -83,8 +83,8 @@
       position:relative;
       z-index:3;
       max-width:920px;
-      margin:34px auto 0;
-      padding:0 16px 170px;
+      margin:22px auto 0;
+      padding:0 16px 120px;
     }
     .sheet{
       border:1px solid #2a3949;
@@ -92,12 +92,12 @@
       background:linear-gradient(180deg,#0e141d,#111925);
       backdrop-filter:blur(4px);
       box-shadow:0 16px 36px rgba(10,14,20,.42);
-      padding:22px 24px;
+      padding:16px 18px;
       color:#eaf2fb;
     }
     h1{
-      margin:0 0 10px;
-      font-size:clamp(1.7rem,3.2vw,2.4rem);
+      margin:0 0 6px;
+      font-size:clamp(1.5rem,2.8vw,2.1rem);
       letter-spacing:.02em;
     }
     .lead{
@@ -109,7 +109,7 @@
       display:flex;
       flex-wrap:wrap;
       gap:10px;
-      margin:0 0 14px;
+      margin:0 0 10px;
     }
     .site-nav a{
       display:inline-flex;
@@ -139,7 +139,7 @@
       fill:currentColor;
     }
     .quick-links{
-      margin:16px 0 0;
+      margin:10px 0 0;
       display:flex;
       flex-wrap:wrap;
       gap:10px;
@@ -172,32 +172,9 @@
       background:#edf3f8;
       border-color:#d6e1ec;
     }
-    .kofi-widget{
-      position:fixed;
-      right:16px;
-      top:16px;
-      z-index:10;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      padding:9px 13px;
-      border-radius:999px;
-      border:1px solid #9e7d2f;
-      background:linear-gradient(180deg,#ffe8ad,#ffd67a);
-      color:#2b210b !important;
-      font-weight:800;
-      text-decoration:none;
-      border-bottom:none !important;
-      box-shadow:0 8px 18px rgba(50,74,97,.24);
-    }
-    .kofi-widget:hover{
-      transform:translateY(-1px);
-      color:#2b210b !important;
-      border-bottom:none !important;
-    }
     h2{
-      margin:24px 0 10px;
-      font-size:1.08rem;
+      margin:16px 0 8px;
+      font-size:1rem;
       letter-spacing:.04em;
       text-transform:uppercase;
       color:#d4dfeb;
@@ -215,17 +192,20 @@
       padding-left:0;
       display:flex;
       flex-direction:column;
-      gap:12px;
+      gap:8px;
+      columns:2;
+      column-gap:16px;
     }
     .editor-row{
       display:flex;
       align-items:center;
       justify-content:space-between;
-      gap:12px;
-      padding:10px 12px;
+      gap:10px;
+      padding:8px 10px;
       border:1px solid rgba(180,200,220,.2);
       border-radius:12px;
       background:rgba(255,255,255,.04);
+      break-inside:avoid;
     }
     .editor-main{
       min-width:0;
@@ -235,7 +215,27 @@
     }
     .editor-link{
       font-weight:700;
-      font-size:1rem;
+      font-size:.96rem;
+    }
+    .editor-actions{
+      display:flex;
+      gap:6px;
+      flex-wrap:wrap;
+    }
+    .editor-action{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:4px 8px;
+      border-radius:999px;
+      border:1px solid #3b5067;
+      background:rgba(255,255,255,.06);
+      color:#cfe5ff;
+      font-size:.72rem;
+      font-weight:700;
+      text-decoration:none;
+      border-bottom:none;
+      width:max-content;
     }
     .editor-meta{
       display:flex;
@@ -249,12 +249,12 @@
       display:inline-flex;
       align-items:center;
       gap:6px;
-      padding:6px 10px;
+      padding:5px 8px;
       border-radius:999px;
       border:1px solid #3b5067;
       background:rgba(255,255,255,.06);
       color:#d4dfeb;
-      font-size:.8rem;
+      font-size:.74rem;
       white-space:nowrap;
     }
     .meta-pill a{
@@ -263,23 +263,6 @@
       border-bottom:none;
       font-weight:700;
     }
-    .followers-pill{
-      display:inline-flex;
-      align-items:center;
-      gap:6px;
-      padding:6px 10px;
-      border-radius:999px;
-      border:1px solid #3b5067;
-      background:rgba(255,255,255,.06);
-      color:#d4dfeb;
-      font-size:.8rem;
-      white-space:nowrap;
-    }
-    .followers-pill svg{
-      width:12px;
-      height:12px;
-      fill:currentColor;
-    }
     .repo-meta{
       margin-left:8px;
       color:#becce0;
@@ -287,8 +270,8 @@
       white-space:nowrap;
     }
     .request-cta{
-      margin-top:14px;
-      padding:12px 14px;
+      margin-top:10px;
+      padding:10px 12px;
       border:1px solid #6aa7d9;
       border-radius:12px;
       background:
@@ -326,10 +309,53 @@
       border-bottom:none !important;
     }
     .request-cta-note{
-      margin:8px 0 0;
+      margin:6px 0 0;
       color:#c5d7ea;
-      font-size:.86rem;
+      font-size:.8rem;
       line-height:1.4;
+    }
+    .support-cta{
+      margin-top:10px;
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px dashed rgba(255,214,122,.5);
+      background:
+        radial-gradient(140px 56px at 12% 0%, rgba(255,214,122,.18), transparent 74%),
+        linear-gradient(180deg, rgba(255,255,255,.04), rgba(0,0,0,.12));
+    }
+    .support-cta-label{
+      display:block;
+      margin-bottom:6px;
+      color:#ffe7b4;
+      font-size:.78rem;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      font-weight:700;
+    }
+    .support-cta-text{
+      margin:0 0 6px;
+      color:#f4e7d2;
+      font-size:.84rem;
+      line-height:1.35;
+    }
+    .support-cta-link{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid #9e7d2f;
+      background:linear-gradient(180deg,#ffe8ad,#ffd67a);
+      color:#2b210b !important;
+      font-weight:800;
+      text-decoration:none;
+      border-bottom:none !important;
+      box-shadow:0 6px 12px rgba(50,74,97,.22);
+    }
+    .support-cta-link:hover{
+      transform:translateY(-1px);
+      color:#2b210b !important;
+      border-bottom:none !important;
     }
     a{
       color:var(--link);
@@ -431,12 +457,12 @@
     .rainbow.show{display:block}
     .butterfly{
       position:fixed;
-      width:16px;
-      height:16px;
+      width:32px;
+      height:32px;
       z-index:2;
       pointer-events:none;
       object-fit:contain;
-      animation:butterflyFlight var(--duration, 14s) linear forwards;
+      will-change:transform;
     }
     .bike-rider{
       position:fixed;
@@ -642,17 +668,14 @@
     }
     @media (max-width:680px){
       .sheet{padding:18px}
-      .kofi-widget{
-        right:10px;
-        top:10px;
-        font-size:.82rem;
-        padding:8px 11px;
-      }
+      #editorList{columns:1}
+    }
+    @media (max-width:880px){
+      #editorList{columns:1}
     }
   </style>
 </head>
 <body>
-  <a class="kofi-widget" href="https://ko-fi.com/saveeditors" target="_blank" rel="noopener noreferrer">Buy Me A Coffee</a>
   <div class="sky-clouds" aria-hidden="true">
     <div class="clouds" id="clouds"></div>
   </div>
@@ -678,10 +701,6 @@
       </nav>
       <h1>SaveEditors</h1>
       <p class="lead">Welcome to my profile. This is a collection of save editors I've made. Primarily tested with the Windows Xbox Game Pass versions.</p>
-      <div id="quickLinks" class="quick-links">
-        <span class="quick-chip ghost">Loading editor links...</span>
-      </div>
-
       <h2>Save Editors</h2>
       <ul id="editorList">
         <li>Loading editors...</li>
@@ -692,6 +711,11 @@
           Submit a Save Editor Request
         </a>
         <p class="request-cta-note">Drop the game name, platform, and save-file type so we can queue it faster.</p>
+      </div>
+      <div class="support-cta">
+        <span class="support-cta-label">Fuel the Duck</span>
+        <p class="support-cta-text">If you enjoy the save editors and want to support future development, consider buying Duck a coffee.</p>
+        <a class="support-cta-link" href="https://ko-fi.com/saveeditors" target="_blank" rel="noopener noreferrer">Buy Duck a Coffee</a>
       </div>
     </section>
   </main>
@@ -737,35 +761,6 @@
       return getRepoPath(repoUrl).toLowerCase() === "saveeditors/saveeditors.github.io";
     }
 
-    const followerCache = new Map();
-
-    async function fetchFollowerCount(owner) {
-      if (!owner) return "";
-      if (followerCache.has(owner)) return followerCache.get(owner);
-      const promise = (async () => {
-        try {
-          const res = await fetch(`https://api.github.com/users/${owner}`, {
-            headers: { Accept: "application/vnd.github+json" },
-            cache: "no-store"
-          });
-          if (!res.ok) return "";
-          const data = await res.json();
-          return typeof data.followers === "number" ? data.followers : "";
-        } catch {
-          return "";
-        }
-      })();
-      followerCache.set(owner, promise);
-      return promise;
-    }
-
-    function formatCount(value) {
-      if (value === "" || value == null) return "";
-      if (value >= 1000000) return `${(value / 1000000).toFixed(1).replace(/\.0$/, "")}m`;
-      if (value >= 1000) return `${(value / 1000).toFixed(1).replace(/\.0$/, "")}k`;
-      return `${value}`;
-    }
-
     async function fetchLastUpdatedDate(repoUrl) {
       const repoPath = getRepoPath(repoUrl);
       if (!repoPath) return "";
@@ -790,13 +785,11 @@
 
     async function loadEditors() {
       const list = document.getElementById("editorList");
-      const quickLinks = document.getElementById("quickLinks");
       try {
         const res = await fetch("editors.json", { cache: "no-store" });
         if (!res.ok) throw new Error("editors.json not found");
         const editors = await res.json();
         if (!Array.isArray(editors) || !editors.length) {
-          if (quickLinks) quickLinks.innerHTML = '<span class="quick-chip ghost">No editors listed yet.</span>';
           list.innerHTML = "<li>No editors listed yet.</li>";
           return;
         }
@@ -804,49 +797,38 @@
           const repo = editor.repo || "";
           const play = editor.play || "";
           const repoPath = getRepoPath(repo);
-          const owner = repoPath ? repoPath.split("/")[0] : "";
           const updated = await fetchLastUpdatedDate(repo);
-          const followers = await fetchFollowerCount(owner);
           return {
             name: editor.name || editor.slug || "Unnamed Editor",
             repo,
             play,
             updated: updated || "Unknown",
-            owner,
-            followers: followers === "" ? "" : Number(followers)
+            repoPath
           };
         }));
 
-        if (quickLinks) {
-          quickLinks.innerHTML = hydrated.map((e) => (
-            `<a class="quick-chip" href="${htmlEscape(e.play || e.repo || '#')}" target="_blank" rel="noopener noreferrer">${htmlEscape(e.name)}</a>`
-          )).join("");
-        }
-
         list.innerHTML = hydrated.map((e) => {
-          const repoLink = e.repo && !isHomepageRepo(e.repo)
-            ? `<a href="${htmlEscape(e.repo)}" target="_blank" rel="noopener noreferrer">Repo</a>`
-            : "Repo";
           const updatedText = `Updated: ${htmlEscape(e.updated)}`;
-          const followerText = e.followers === "" ? "" : formatCount(e.followers);
-          const followersBlock = followerText
-            ? `<span class="followers-pill" title="GitHub followers for ${htmlEscape(e.owner)}">
-                 <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M10 5.5a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm-4.5 4a3.5 3.5 0 0 1 7 0v.5a.5.5 0 0 1-.5.5H6a.5.5 0 0 1-.5-.5v-.5Zm9.5 2.5a.5.5 0 0 1-.5.5h-1.58a.5.5 0 0 1 0-1H14v-.5a2.5 2.5 0 0 0-3.6-2.24.5.5 0 0 1-.44-.9A3.5 3.5 0 0 1 15 11.5v.5Z"/></svg>
-                 ${htmlEscape(followerText)}
-               </span>`
+          const liveLink = e.play
+            ? `<a class="editor-action" href="${htmlEscape(e.play)}" target="_blank" rel="noopener noreferrer">Live Editor</a>`
+            : "";
+          const repoButton = e.repo && !isHomepageRepo(e.repo)
+            ? `<a class="editor-action" href="${htmlEscape(e.repo)}" target="_blank" rel="noopener noreferrer">GitHub Repo</a>`
+            : "";
+          const actions = (liveLink || repoButton)
+            ? `<div class="editor-actions">${liveLink}${repoButton}</div>`
             : "";
           return `<li class="editor-row">
             <div class="editor-main">
               <a class="editor-link" href="${htmlEscape(e.play || e.repo || '#')}" target="_blank" rel="noopener noreferrer">${htmlEscape(e.name)}</a>
+              ${actions}
             </div>
             <div class="editor-meta">
-              <span class="meta-pill">${repoLink} · ${updatedText}</span>
-              ${followersBlock}
+              <span class="meta-pill">${updatedText}</span>
             </div>
           </li>`;
         }).join("");
       } catch {
-        if (quickLinks) quickLinks.innerHTML = '<span class="quick-chip ghost">Could not load editor links yet.</span>';
         list.innerHTML = "<li>Could not load editor list yet.</li>";
       }
     }
@@ -862,7 +844,8 @@
       lastTs: 0,
       nextMoodTs: 0,
       pauseUntilTs: 0,
-      nextTurnTs: 0
+      nextTurnTs: 0,
+      initialized: false
     };
 
     function rand(min, max) {
@@ -875,9 +858,13 @@
       const duck = document.querySelector(".duck");
       if (!decor || !wrap || !duck) return;
 
-      duckState.minX = 50;
-      duckState.maxX = Math.max(duckState.minX + 220, decor.clientWidth - 140);
-      if (duckState.x < duckState.minX || duckState.x > duckState.maxX) {
+      duckState.minX = 80;
+      duckState.maxX = Math.max(duckState.minX + 260, decor.clientWidth - 160);
+      if (!duckState.initialized) {
+        duckState.x = (duckState.minX + duckState.maxX) / 2;
+        duckState.dir = Math.random() < 0.5 ? -1 : 1;
+        duckState.initialized = true;
+      } else if (duckState.x < duckState.minX || duckState.x > duckState.maxX) {
         duckState.x = Math.min(duckState.maxX, Math.max(duckState.minX, duckState.x));
       }
 
@@ -1015,11 +1002,11 @@
         const height = rand(14, 26);
         const scale = rand(0.8, 1.5);
         const opacity = rand(0.55, 0.95);
-        const startX = rand(-30, 15);
-        const endX = rand(110, 160);
+        const startX = rand(-80, -30);
+        const endX = rand(120, 180);
         const y = rand(6, 46);
         const duration = rand(18, 34);
-        const delay = rand(-duration, 0);
+        const delay = rand(0, 6);
         const sway = rand(7, 14);
 
         wrap.style.setProperty("--start-x", `${startX}vw`);
@@ -1049,37 +1036,74 @@
       }
     }
 
-    function spawnButterfly() {
+    const dayCycleMs = 65000;
+    const nightStartMs = dayCycleMs * 0.5;
+    const nightEndMs = dayCycleMs * 0.9;
+    const nightDurationMs = nightEndMs - nightStartMs;
+    const cycleStart = performance.now();
+    let butterflyEl = null;
+    let butterflyAnim = null;
+
+    function cycleTime(now) {
+      const t = (now - cycleStart) % dayCycleMs;
+      return t < 0 ? t + dayCycleMs : t;
+    }
+
+    function timeUntil(targetMs, now) {
+      const t = cycleTime(now);
+      return t <= targetMs ? targetMs - t : dayCycleMs - t + targetMs;
+    }
+
+    function spawnButterflyFlight(durationMs) {
       const layer = document.getElementById("skyEffects");
-      if (!layer) return;
+      if (!layer || durationMs <= 0) return;
+      if (butterflyAnim) butterflyAnim.cancel();
+      if (butterflyEl) butterflyEl.remove();
+
       const butterfly = document.createElement("img");
       butterfly.className = "butterfly";
       butterfly.src = "assets/butterfly.gif";
       butterfly.alt = "";
       butterfly.decoding = "async";
-      const startX = rand(-10, 20);
-      const endX = rand(70, 120);
-      const startY = rand(12, 44);
-      const endY = Math.max(6, Math.min(50, startY + rand(-10, 10)));
-      const duration = rand(10, 18);
-      butterfly.style.setProperty("--start-x", `${startX}vw`);
-      butterfly.style.setProperty("--start-y", `${startY}vh`);
-      butterfly.style.setProperty("--end-x", `${endX}vw`);
-      butterfly.style.setProperty("--end-y", `${endY}vh`);
-      butterfly.style.setProperty("--duration", `${duration}s`);
       layer.appendChild(butterfly);
-      setTimeout(() => butterfly.remove(), duration * 1000 + 600);
+      butterflyEl = butterfly;
+
+      const startX = rand(6, 68);
+      const midX = rand(18, 82);
+      const endX = rand(110, 140);
+      const startY = rand(12, 42);
+      const midY = Math.max(6, Math.min(48, startY + rand(-8, 8)));
+      const endY = Math.max(6, Math.min(50, startY + rand(-6, 6)));
+      const leaveLeadMs = 15000;
+      const exitOffset = Math.max(0, Math.min(1, (durationMs - leaveLeadMs) / durationMs));
+
+      butterflyAnim = butterfly.animate([
+        { transform: `translate(${startX}vw, ${startY}vh)` },
+        { transform: `translate(${midX}vw, ${midY}vh)`, offset: exitOffset },
+        { transform: `translate(${endX}vw, ${endY}vh)` }
+      ], {
+        duration: durationMs,
+        easing: "ease-in-out",
+        fill: "forwards"
+      });
+
+      butterflyAnim.onfinish = () => {
+        if (butterflyEl) butterflyEl.remove();
+        butterflyEl = null;
+        butterflyAnim = null;
+      };
     }
 
-    function startButterflies() {
-      const loop = () => {
-        const delay = rand(18000, 32000);
-        setTimeout(() => {
-          if (Math.random() < 0.6) spawnButterfly();
-          loop();
-        }, delay);
-      };
-      loop();
+    function startButterflyCycle() {
+      const now = performance.now();
+      const t = cycleTime(now);
+      if (t >= nightStartMs && t <= nightEndMs) {
+        setTimeout(startButterflyCycle, timeUntil(nightEndMs, now));
+        return;
+      }
+      const timeToNight = timeUntil(nightStartMs, now);
+      spawnButterflyFlight(timeToNight);
+      setTimeout(startButterflyCycle, timeToNight + nightDurationMs);
     }
 
     function startBikeRider() {
@@ -1099,7 +1123,7 @@
     startDuckWalk();
     startDuckNotes();
     setupRainbow();
-    startButterflies();
+    startButterflyCycle();
     startBikeRider();
     let resizeTimer = 0;
     window.addEventListener("resize", () => {
