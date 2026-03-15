@@ -131,6 +131,12 @@
       height:24px;
       fill:currentColor;
     }
+    .type-caret{
+      display:inline-block;
+      margin-left:4px;
+      color:#d8e5f3;
+      animation:caretBlink 1s steps(2, start) infinite;
+    }
     .lead{
       margin:0;
       color:#c8d6e6;
@@ -324,6 +330,10 @@
     }
     .side-card .cta-actions{
       justify-content:center;
+      margin-top:14px;
+    }
+    .side-card .request-cta-note{
+      margin-bottom:6px;
     }
     .sky-clouds{
       position:fixed;
@@ -590,6 +600,10 @@
       0%,100%{filter:brightness(1)}
       50%{filter:brightness(1.25)}
     }
+    @keyframes caretBlink{
+      0%,49%{opacity:1}
+      50%,100%{opacity:0}
+    }
     @media (max-width:880px){
       .card-row{grid-template-columns:1fr}
       #editorList{columns:1}
@@ -618,7 +632,10 @@
             <span>SaveEditors</span>
           </a>
         </h1>
-        <p class="lead" id="leadText" data-fulltext="Welcome to my profile. This is a collection of save editors I've made. Primarily tested with the Windows Xbox Game Pass versions."></p>
+        <p class="lead">
+          <span id="leadText" data-fulltext="Welcome to my profile. This is a collection of save editors I've made. Primarily tested with the Windows Xbox Game Pass versions."></span>
+          <span class="type-caret" aria-hidden="true">|</span>
+        </p>
       </section>
       <div class="card-row">
         <section class="sheet">
