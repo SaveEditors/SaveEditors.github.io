@@ -314,6 +314,34 @@
       color:#ffffff;
       border-color:rgba(255,255,255,.22);
     }
+    .all-editors-cta{
+      margin-top:10px;
+      display:flex;
+      justify-content:center;
+    }
+    .all-editors-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding:10px 14px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.18);
+      background:linear-gradient(180deg, rgba(54,211,153,.96), rgba(54,211,153,.82));
+      color:#071312;
+      font-weight:900;
+      letter-spacing:.02em;
+      text-decoration:none;
+      border-bottom:none;
+      box-shadow: 0 12px 26px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.35);
+    }
+    .all-editors-btn:hover{
+      filter:brightness(1.03);
+      border-color:rgba(255,255,255,.28);
+    }
+    .all-editors-btn:active{
+      transform: translateY(1px);
+    }
     .editor-meta{
       display:flex;
       align-items:center;
@@ -768,6 +796,9 @@
           <ul id="editorList">
             <li>Loading editors...</li>
           </ul>
+          <div class="all-editors-cta">
+            <a class="all-editors-btn" href="https://github.com/stars/SaveEditors/lists/game-save-editors" target="_blank" rel="noopener noreferrer">View All Editors</a>
+          </div>
         </section>
         <div class="side-stack">
           <section class="sheet side-card">
