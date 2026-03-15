@@ -1046,14 +1046,22 @@
       const exitOffsetRaw = (durationMs - leaveLeadMs) / durationMs;
       const exitOffset = Math.max(0.6, Math.min(0.92, exitOffsetRaw));
       const hops = 7;
-      const keyframes = [{ transform: `translate(${startX}vw, ${startY}vh)`, offset: 0 }];
+      const points = [{ x: startX, y: startY, offset: 0 }];
       for (let i = 1; i <= hops; i++) {
         const t = (i / (hops + 1)) * exitOffset;
         const x = i % 2 === 0 ? rand(10, 28) : rand(64, 88);
         const y = Math.max(6, Math.min(50, startY + rand(-10, 10)));
-        keyframes.push({ transform: `translate(${x}vw, ${y}vh)`, offset: t });
+        points.push({ x, y, offset: t });
       }
-      keyframes.push({ transform: `translate(${endX}vw, ${endY}vh)`, offset: 1 });
+      points.push({ x: endX, y: endY, offset: 1 });
+      const keyframes = points.map((pt, idx) => {
+        const next = points[idx + 1] || points[idx - 1] || pt;
+        const scaleX = next.x >= pt.x ? 1 : -1;
+        return {
+          transform: `translate(${pt.x}vw, ${pt.y}vh) scaleX(${scaleX})`,
+          offset: pt.offset
+        };
+      });
 
       butterflyAnim = butterfly.animate(keyframes, {
         duration: durationMs,
