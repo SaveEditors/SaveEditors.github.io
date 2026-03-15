@@ -82,13 +82,19 @@
     .page{
       position:relative;
       z-index:3;
-      max-width:920px;
-      margin:12px auto 0;
-      padding:0 12px 70px;
+      max-width:980px;
+      margin:10px auto 0;
+      padding:0 12px 56px;
     }
     .stack{
       display:grid;
       gap:10px;
+    }
+    .card-row{
+      display:grid;
+      grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);
+      gap:10px;
+      align-items:start;
     }
     .sheet{
       border:1px solid #2a3949;
@@ -565,14 +571,14 @@
       0%,100%{filter:brightness(1)}
       50%{filter:brightness(1.25)}
     }
-    @media (max-width:680px){
-      .sheet{padding:14px 16px}
-      #editorList{columns:1}
-    }
     @media (max-width:880px){
+      .card-row{grid-template-columns:1fr}
       #editorList{columns:1}
     }
     @media (min-width:860px){
+      #editorList{columns:2}
+    }
+    @media (min-width:1080px){
       #editorList{columns:3}
     }
   </style>
@@ -588,24 +594,26 @@
         <h1><a class="title-link" href="https://github.com/SaveEditors" target="_blank" rel="noopener noreferrer">SaveEditors</a></h1>
         <p class="lead">Welcome to my profile. This is a collection of save editors I've made. Primarily tested with the Windows Xbox Game Pass versions.</p>
       </section>
-      <section class="sheet">
-        <h2>Save Editors</h2>
-        <ul id="editorList">
-          <li>Loading editors...</li>
-        </ul>
-      </section>
-      <section class="sheet">
-        <div class="request-cta">
-          <span class="request-cta-label">Need another save editor?</span>
-          <p class="request-cta-note">Drop the game name, platform, and save-file type so we can queue it faster. If you enjoy the save editors and want to support future development, consider buying Duck a coffee.</p>
-          <div class="cta-actions">
-            <a class="request-cta-link" href="https://whispermeter.com/message-box/15b6ac70-9113-4e9c-b629-423f335c7e07" target="_blank" rel="noopener noreferrer">
-              Submit a Save Editor Request
-            </a>
-            <a class="support-cta-link" href="https://ko-fi.com/saveeditors" target="_blank" rel="noopener noreferrer">Buy Duck a Coffee</a>
+      <div class="card-row">
+        <section class="sheet">
+          <h2>Save Editors</h2>
+          <ul id="editorList">
+            <li>Loading editors...</li>
+          </ul>
+        </section>
+        <section class="sheet">
+          <div class="request-cta">
+            <span class="request-cta-label">Need another save editor?</span>
+            <p class="request-cta-note">Drop the game name, platform, and save-file type so we can queue it faster. If you enjoy the save editors and want to support future development, consider buying Duck a coffee.</p>
+            <div class="cta-actions">
+              <a class="request-cta-link" href="https://whispermeter.com/message-box/15b6ac70-9113-4e9c-b629-423f335c7e07" target="_blank" rel="noopener noreferrer">
+                Submit a Save Editor Request
+              </a>
+              <a class="support-cta-link" href="https://ko-fi.com/saveeditors" target="_blank" rel="noopener noreferrer">Buy Duck a Coffee</a>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
     </div>
   </main>
 
@@ -894,7 +902,7 @@
         const startX = rand(-80, -30);
         const endX = rand(120, 180);
         const y = rand(6, 46);
-        const duration = rand(18, 34);
+        const duration = rand(36, 68);
         const delay = rand(0, 6);
         const sway = rand(7, 14);
 
