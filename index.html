@@ -286,12 +286,12 @@
       background:rgba(255,255,255,.04);
       break-inside:avoid;
     }
-    .editor-main{
-      min-width:0;
-      display:flex;
-      flex-direction:column;
-      gap:8px;
-    }
+	    .editor-main{
+	      min-width:0;
+	      display:flex;
+	      flex-direction:column;
+	      gap:10px;
+	    }
     .editor-link{
       font-weight:700;
       font-size:.9rem;
@@ -351,21 +351,21 @@
       display:flex;
       justify-content:center;
     }
-    .all-editors-btn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:8px;
-      padding:4px 8px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.18);
-      background:linear-gradient(180deg, rgba(54,211,153,.96), rgba(54,211,153,.82));
-      color:#071312;
-      font-weight:900;
-      letter-spacing:.02em;
-      font-size:.68rem;
-      text-decoration:none;
-      border-bottom:none;
+	    .all-editors-btn{
+	      display:inline-flex;
+	      align-items:center;
+	      justify-content:center;
+	      gap:8px;
+	      padding:4px 8px;
+	      border-radius:999px;
+	      border:1px solid rgba(255,255,255,.18);
+	      background:linear-gradient(180deg, rgba(54,211,153,.96), rgba(54,211,153,.82));
+	      color:#000000;
+	      font-weight:900;
+	      letter-spacing:.02em;
+	      font-size:.68rem;
+	      text-decoration:none;
+	      border-bottom:none;
       box-shadow: 0 8px 18px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.35);
     }
     .all-editors-btn:hover{
@@ -875,34 +875,22 @@
       </section>
       <div class="card-row">
         <section class="sheet editor-card">
-          <h2>Save Editors</h2>
-          <div class="mobile-cta-bar" aria-label="Quick links">
-            <a class="mobile-cta mobile-cta--feedback" href="https://whispermeter.com/feedback/SaveEditors" target="_blank" rel="noopener noreferrer">Feedback</a>
-            <a class="mobile-cta mobile-cta--support" href="https://ko-fi.com/saveeditors" target="_blank" rel="noopener noreferrer">Support</a>
-          </div>
+	          <h2>Save Editors</h2>
+	          <div class="mobile-cta-bar" aria-label="Quick links">
+	            <a class="mobile-cta mobile-cta--support" href="https://ko-fi.com/saveeditors" target="_blank" rel="noopener noreferrer">Support</a>
+	          </div>
           <ul id="editorList">
             <li>Loading editors...</li>
           </ul>
           <div class="all-editors-cta">
             <a class="all-editors-btn" href="https://github.com/stars/SaveEditors/lists/game-save-editors" target="_blank" rel="noopener noreferrer">View All Editors</a>
           </div>
-        </section>
-        <div class="side-stack">
-          <section class="sheet side-card">
-            <div class="request-cta">
-              <span class="request-cta-label">Need another save editor?</span>
-              <p class="request-cta-note">Drop the game name, platform, and save-file type so we can queue it faster.</p>
-              <div class="cta-actions">
-                <a class="request-cta-link" href="https://whispermeter.com/feedback/SaveEditors" target="_blank" rel="noopener noreferrer">
-                  Submit a Save Editor Request
-                </a>
-              </div>
-            </div>
-          </section>
-          <section class="sheet side-card">
-            <div class="request-cta">
-              <span class="request-cta-label">Fuel the Duck <span aria-hidden="true">☕</span></span>
-              <p class="request-cta-note">If you enjoy the save editors and want to support future development, consider buying Duck a coffee.</p>
+	        </section>
+	        <div class="side-stack">
+	          <section class="sheet side-card">
+	            <div class="request-cta">
+	              <span class="request-cta-label">Fuel the Duck <span aria-hidden="true">☕</span></span>
+	              <p class="request-cta-note">If you enjoy the save editors and want to support future development, consider buying Duck a coffee.</p>
               <div class="cta-actions">
                 <a class="support-cta-link" href="https://ko-fi.com/saveeditors" target="_blank" rel="noopener noreferrer">Buy Duck a Coffee</a>
               </div>
