@@ -358,18 +358,6 @@
       opacity:var(--opacity, .9);
       animation:cloudSway var(--sway, 9s) ease-in-out infinite;
     }
-    .rainbow{
-      position:fixed;
-      left:10vw;
-      top:8vh;
-      width:220px;
-      height:120px;
-      opacity:0;
-      display:none;
-      filter:drop-shadow(0 6px 12px rgba(20,40,70,.18));
-      animation:rainbowDay var(--day-night-cycle) linear infinite;
-    }
-    .rainbow.show{display:block}
     .butterfly{
       position:fixed;
       width:32px;
@@ -555,10 +543,6 @@
       0%{transform:translateX(var(--start-x, -20vw)) translateY(var(--y, 20vh))}
       100%{transform:translateX(var(--end-x, 120vw)) translateY(var(--y, 20vh))}
     }
-    @keyframes rainbowDay{
-      0%,42%,100%{opacity:.92}
-      50%,90%{opacity:0}
-    }
     @keyframes butterflyFlight{
       0%{transform:translate(var(--start-x), var(--start-y))}
       100%{transform:translate(var(--end-x), var(--end-y))}
@@ -597,16 +581,7 @@
   <div class="sky-clouds" aria-hidden="true">
     <div class="clouds" id="clouds"></div>
   </div>
-  <div class="sky-effects" id="skyEffects" aria-hidden="true">
-    <svg class="rainbow" id="rainbow" viewBox="0 0 200 110" aria-hidden="true">
-      <path d="M10,100 A90,90 0 0 1 190,100" stroke="#ff4b4b" stroke-width="10" fill="none" stroke-linecap="round"/>
-      <path d="M20,100 A80,80 0 0 1 180,100" stroke="#ff9f40" stroke-width="10" fill="none" stroke-linecap="round"/>
-      <path d="M30,100 A70,70 0 0 1 170,100" stroke="#ffe44d" stroke-width="10" fill="none" stroke-linecap="round"/>
-      <path d="M40,100 A60,60 0 0 1 160,100" stroke="#6fdc6a" stroke-width="10" fill="none" stroke-linecap="round"/>
-      <path d="M50,100 A50,50 0 0 1 150,100" stroke="#4aa3ff" stroke-width="10" fill="none" stroke-linecap="round"/>
-      <path d="M60,100 A40,40 0 0 1 140,100" stroke="#7b6dff" stroke-width="10" fill="none" stroke-linecap="round"/>
-    </svg>
-  </div>
+  <div class="sky-effects" id="skyEffects" aria-hidden="true"></div>
   <main class="page">
     <div class="stack">
       <section class="sheet">
@@ -939,17 +914,6 @@
       }
     }
 
-    function setupRainbow() {
-      const rainbow = document.getElementById("rainbow");
-      if (!rainbow) return;
-      if (Math.random() < 0.1) {
-        rainbow.classList.add("show");
-        rainbow.style.left = `${rand(6, 60)}vw`;
-        rainbow.style.top = `${rand(6, 18)}vh`;
-        rainbow.style.transform = `scale(${rand(0.75, 1.15)})`;
-      }
-    }
-
     const dayCycleMs = 65000;
     const nightStartMs = dayCycleMs * 0.5;
     const nightEndMs = dayCycleMs * 0.9;
@@ -1036,7 +1000,6 @@
     buildClouds();
     startDuckWalk();
     startDuckNotes();
-    setupRainbow();
     startButterflyCycle();
     startBikeRider();
     let resizeTimer = 0;
