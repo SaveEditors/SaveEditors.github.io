@@ -843,6 +843,7 @@
       body{overflow-x:hidden}
       .page{height:auto;min-height:100svh;overflow:visible}
       .stack{height:auto}
+      #editorList{max-height:clamp(240px, 48svh, 440px)}
     }
     @media (min-width:860px){
       #editorList{columns:2}
@@ -893,6 +894,17 @@
           </div>
 	        </section>
 	        <div class="side-stack">
+	          <section class="sheet side-card">
+	            <div class="request-cta">
+	              <span class="request-cta-label">Need another save editor?</span>
+	              <p class="request-cta-note">Drop the game name, platform, and save-file type so we can queue it faster.</p>
+	              <div class="cta-actions">
+	                <a class="request-cta-link" href="https://whispermeter.com/feedback/SaveEditors" target="_blank" rel="noopener noreferrer">
+	                  Submit a Save Editor Request
+	                </a>
+	              </div>
+	            </div>
+	          </section>
 	          <section class="sheet side-card">
 	            <div class="request-cta">
 	              <span class="request-cta-label">Fuel the Duck <span aria-hidden="true">☕</span></span>
