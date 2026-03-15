@@ -470,7 +470,6 @@
         58px 2px 0 0 rgba(255,255,255,.72);
       filter:drop-shadow(0 2px 3px rgba(80,117,145,.2));
       opacity:var(--opacity, .9);
-      animation:cloudSway var(--sway, 9s) ease-in-out infinite;
     }
     .butterfly{
       position:fixed;
@@ -647,11 +646,6 @@
         linear-gradient(180deg,#b6bec6,#9da7b0);
       border-top:1px solid rgba(56,63,72,.4);
       box-shadow:inset 0 6px 10px rgba(255,255,255,.18);
-    }
-    @keyframes cloudSway{
-      0%{transform:translateX(0) translateY(0) scale(var(--scale, 1))}
-      50%{transform:translateX(38px) translateY(-4px) scale(var(--scale, 1))}
-      100%{transform:translateX(-18px) translateY(2px) scale(var(--scale, 1))}
     }
     @keyframes cloudDrift{
       0%{transform:translateX(var(--start-x, -20vw)) translateY(var(--y, 20vh))}
@@ -1091,6 +1085,7 @@
       if (!clouds) return;
       clouds.innerHTML = "";
       const count = Math.min(18, Math.max(12, Math.round(window.innerWidth / 120)));
+      const baseDuration = 110;
       for (let i = 0; i < count; i++) {
         const wrap = document.createElement("span");
         wrap.className = "cloud-wrap";
@@ -1104,9 +1099,8 @@
         const startX = rand(-80, -30);
         const endX = rand(120, 180);
         const y = rand(6, 46);
-        const duration = rand(72, 136);
+        const duration = baseDuration * (i % 2 === 0 ? 1 : 1.01);
         const delay = rand(0, 6);
-        const sway = rand(3.5, 7);
 
         wrap.style.setProperty("--start-x", `${startX}vw`);
         wrap.style.setProperty("--end-x", `${endX}vw`);
@@ -1117,7 +1111,6 @@
         cloud.style.setProperty("--height", `${height}px`);
         cloud.style.setProperty("--scale", `${scale}`);
         cloud.style.setProperty("--opacity", `${opacity}`);
-        cloud.style.setProperty("--sway", `${sway}s`);
 
         wrap.appendChild(cloud);
         clouds.appendChild(wrap);
