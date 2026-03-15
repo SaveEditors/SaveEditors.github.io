@@ -115,7 +115,16 @@
       background:linear-gradient(180deg, rgba(104,62,152,.55), rgba(34,18,62,.82));
     }
     .purple-night .night-purple{
-      animation:nightPurpleCycle var(--day-night-cycle) linear infinite;
+      opacity:1;
+      animation:none;
+    }
+    body.purple-night:before{
+      opacity:0;
+      animation:none;
+    }
+    body.purple-night:after{
+      opacity:1;
+      animation:starTwinkle 7s ease-in-out infinite;
     }
     .rain-dim{
       position:fixed;
@@ -282,8 +291,17 @@
     }
     .editor-actions{
       display:flex;
+      align-items:center;
       gap:4px;
       flex-wrap:wrap;
+    }
+    .editor-sep{
+      display:inline-block;
+      padding:0 4px;
+      color:rgba(255,255,255,.35);
+      font-size:.68rem;
+      font-weight:900;
+      user-select:none;
     }
     .editor-action{
       display:inline-flex;
@@ -324,16 +342,17 @@
       align-items:center;
       justify-content:center;
       gap:8px;
-      padding:10px 14px;
+      padding:4px 8px;
       border-radius:999px;
       border:1px solid rgba(255,255,255,.18);
       background:linear-gradient(180deg, rgba(54,211,153,.96), rgba(54,211,153,.82));
       color:#071312;
       font-weight:900;
       letter-spacing:.02em;
+      font-size:.68rem;
       text-decoration:none;
       border-bottom:none;
-      box-shadow: 0 12px 26px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.35);
+      box-shadow: 0 8px 18px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.35);
     }
     .all-editors-btn:hover{
       filter:brightness(1.03);
@@ -456,6 +475,18 @@
     .sheet a:hover{
       color:#d1e7ff;
       border-bottom-color:rgba(142,194,255,.75);
+    }
+    .sheet a.editor-action,
+    .sheet a.editor-action:hover{
+      border-bottom:none;
+    }
+    .sheet a.editor-action--live,
+    .sheet a.editor-action--live:hover{
+      color:#0a0e14;
+    }
+    .sheet a.editor-action--repo,
+    .sheet a.editor-action--repo:hover{
+      color:#ffffff;
     }
     .cta-actions{
       display:flex;
@@ -952,13 +983,14 @@
           const repoButton = e.repo && !isHomepageRepo(e.repo)
             ? `<a class="editor-action editor-action--repo" href="${htmlEscape(e.repo)}" target="_blank" rel="noopener noreferrer">${ghMark}GitHub Repo</a>`
             : "";
+          const sep = (liveLink && repoButton) ? `<span class="editor-sep" aria-hidden="true">|</span>` : "";
           const actions = (liveLink || repoButton)
-            ? `<div class="editor-actions">${liveLink}${repoButton}</div>`
+            ? `<div class="editor-actions">${liveLink}${sep}${repoButton}</div>`
             : "";
           const updatedPill = updatedText ? `<span class="meta-pill">${updatedText}</span>` : "";
           return `<li class="editor-row">
             <div class="editor-main">
-              <a class="editor-link" href="${htmlEscape(e.play || e.repo || '#')}" target="_blank" rel="noopener noreferrer">${htmlEscape(e.name)}</a>
+              <div class="editor-link">${htmlEscape(e.name)}</div>
               ${actions}
             </div>
             <div class="editor-meta">
@@ -1288,16 +1320,8 @@
     }
 
     function startPurpleNight() {
-      const apply = () => {
-        document.body.classList.toggle("purple-night", Math.random() < 0.08);
-      };
-      apply();
-      const now = performance.now();
-      const untilNext = timeUntil(dayCycleMs, now);
-      window.setTimeout(() => {
-        apply();
-        window.setInterval(apply, dayCycleMs);
-      }, untilNext);
+      document.body.classList.add("purple-night");
+      document.body.classList.remove("dawn-active");
     }
 
     function startRainCycle() {
@@ -1362,7 +1386,6 @@
     startTypewriter();
     startButterflyCycle();
     startBikeRider();
-    startDawnTint();
     startPurpleNight();
     startRainCycle();
     let resizeTimer = 0;
