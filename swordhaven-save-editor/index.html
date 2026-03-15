@@ -41,13 +41,22 @@
         <section class="load-card load-card-single">
           <div class="load-single-copy">
             <span class="load-title">Choose Save Folder</span>
-            <span class="load-subtitle">Select a folder. Auto-detect scans for `Progress` first, then `Save_*.as`.</span>
+            <span class="load-subtitle">Select a folder. Auto-detect scans for `Progress` first, then archive payloads (`Save_*.as` or WGS blobs).</span>
           </div>
           <div class="load-single-actions">
             <button id="chooseFolderBtn" type="button" class="primary">Choose Save Folder</button>
+            <button id="chooseFilesBtn" type="button" class="ghost">Choose Save Files</button>
             <div id="selectedFolderLabel" class="selected-folder-label">No folder selected.</div>
+            <div id="detectedSaves" class="detected-saves" hidden>
+              <label class="field">
+                <span>Multiple saves detected</span>
+                <select id="detectedSavesSelect"></select>
+              </label>
+              <button id="detectedSavesLoadBtn" type="button" class="primary">Load Selected</button>
+            </div>
           </div>
           <input id="autoDetectInput" type="file" webkitdirectory directory hidden />
+          <input id="fileDetectInput" type="file" multiple hidden />
         </section>
       </section>
 

@@ -1,6 +1,11 @@
 const autoDetectInput = document.getElementById("autoDetectInput");
 const chooseFolderBtn = document.getElementById("chooseFolderBtn");
+const chooseFilesBtn = document.getElementById("chooseFilesBtn");
+const fileDetectInput = document.getElementById("fileDetectInput");
 const selectedFolderLabel = document.getElementById("selectedFolderLabel");
+const detectedSaves = document.getElementById("detectedSaves");
+const detectedSavesSelect = document.getElementById("detectedSavesSelect");
+const detectedSavesLoadBtn = document.getElementById("detectedSavesLoadBtn");
 const exportBtn = document.getElementById("exportBtn");
 const revertAllBtn = document.getElementById("revertAllBtn");
 const resetBtn = document.getElementById("resetBtn");
@@ -217,6 +222,73 @@ function createEmptyState() {
     selectedRecord: null,
     catalog: null,
   };
+}
+
+let detectedArchiveCandidates = [];
+
+function fileDisplayPath(file) {
+  return String(file?.webkitRelativePath || file?.name || "");
+}
+
+function formatDateTime(ms) {
+  if (!ms) return "";
+  try {
+    return new Date(ms).toLocaleString();
+  } catch {
+    return "";
+  }
+}
+
+async function hasGzipHeader(file) {
+  try {
+    const head = new Uint8Array(await file.slice(0, 2).arrayBuffer());
+    return head.length === 2 && head[0] === 0x1f && head[1] === 0x8b;
+  } catch {
+    return false;
+  }
+}
+
+function isLikelySwordhavenArchiveEntries(entries) {
+  if (!Array.isArray(entries) || entries.length < 2) return false;
+  const names = new Set(entries.map((e) => String(e.name || "").toLowerCase()));
+  return names.has("save.dat") && names.has("player.dat");
+}
+
+async function isValidSwordhavenArchiveFile(file) {
+  const compressed = await file.arrayBuffer();
+  const inflated = await gunzip(compressed);
+  const entries = parseArchiveEntries(inflated);
+  return isLikelySwordhavenArchiveEntries(entries);
+}
+
+function resetDetectedSaves() {
+  detectedArchiveCandidates = [];
+  if (detectedSavesSelect) detectedSavesSelect.innerHTML = "";
+  if (detectedSaves) detectedSaves.hidden = true;
+}
+
+function renderDetectedSaves(files, sortMode = "recent") {
+  resetDetectedSaves();
+  detectedArchiveCandidates = Array.from(files || []);
+  if (!detectedSaves || !detectedSavesSelect || detectedArchiveCandidates.length <= 1) return;
+
+  if (sortMode === "recent") {
+    detectedArchiveCandidates.sort((a, b) => {
+      if ((b.lastModified || 0) !== (a.lastModified || 0)) return (b.lastModified || 0) - (a.lastModified || 0);
+      return (b.size || 0) - (a.size || 0);
+    });
+  }
+
+  detectedArchiveCandidates.forEach((file, idx) => {
+    const option = document.createElement("option");
+    const path = fileDisplayPath(file);
+    const stamp = formatDateTime(file.lastModified);
+    const size = formatBytes(file.size || 0);
+    option.value = String(idx);
+    option.textContent = `${path || file.name} · ${size}${stamp ? ` · ${stamp}` : ""}`;
+    detectedSavesSelect.appendChild(option);
+  });
+  detectedSaves.hidden = false;
 }
 
 const ui = {
@@ -2472,10 +2544,11 @@ function getProgressName(file, hasProgressSegment) {
 
 async function loadArchive(file) {
   setStatus("Scanning archive payload...", "loading");
+  const displayName = fileDisplayPath(file) || file.name;
   const compressed = await file.arrayBuffer();
   const inflated = await gunzip(compressed);
   const entries = parseArchiveEntries(inflated);
-  state = normalizeEntries(entries, { sourceType: "archive", sourceName: file.name });
+  state = normalizeEntries(entries, { sourceType: "archive", sourceName: displayName });
   ui.rawLoadedFor = null;
   ui.recordMode = "auto";
   ui.entityLevel = "";
@@ -2484,9 +2557,9 @@ async function loadArchive(file) {
   ui.worldPinsFile = "";
   ui.dhCharacter = "";
   ui.infoLogic = "";
-  selectedFolderLabel.textContent = `Loaded archive: ${file.name}`;
+  selectedFolderLabel.textContent = `Loaded archive: ${displayName}`;
   renderAll();
-  setStatus(`Archive loaded · ${file.name} · ${entries.length} entries.`, "good");
+  setStatus(`Archive loaded · ${displayName} · ${entries.length} entries.`, "good");
 }
 
 async function loadProgressFiles(fileList) {
@@ -2533,6 +2606,8 @@ async function loadAutoDetect(fileList) {
     return;
   }
 
+  resetDetectedSaves();
+
   const archives = files.filter((file) => file.name.toLowerCase().endsWith(".as"));
   const progressFiles = files.filter((file) => {
     const rel = (file.webkitRelativePath || "").replace(/\\/g, "/").toLowerCase();
@@ -2553,12 +2628,53 @@ async function loadAutoDetect(fileList) {
       if (rankA.slot !== rankB.slot) return rankB.slot - rankA.slot;
       return rankB.size - rankA.size;
     });
+    renderDetectedSaves(sorted, "provided");
     await loadArchive(sorted[0]);
     selectedFolderLabel.textContent = `Detected archive: ${sorted[0].name}`;
     return;
   }
 
-  setStatus("No Swordhaven - Iron Conspiracy save payload detected.", "error");
+  // WGS/Game Pass saves commonly include gzip blobs with no file extension.
+  const gzipCandidates = [];
+  const sizeCandidates = files
+    .filter((file) => file && file.size >= 4096)
+    .slice()
+    .sort((a, b) => (b.size || 0) - (a.size || 0))
+    .slice(0, 80);
+  for (const file of sizeCandidates) {
+    if (await hasGzipHeader(file)) gzipCandidates.push(file);
+  }
+
+  if (!gzipCandidates.length) {
+    setStatus("No Swordhaven - Iron Conspiracy save payload detected.", "error");
+    return;
+  }
+
+  gzipCandidates.sort((a, b) => (b.size || 0) - (a.size || 0));
+  const scanList = gzipCandidates.slice(0, 30);
+  const valid = [];
+
+  setStatus("Scanning WGS archive candidates...", "loading");
+  for (const file of scanList) {
+    try {
+      if (await isValidSwordhavenArchiveFile(file)) valid.push(file);
+    } catch {
+      // Ignore non-archive gzip files.
+    }
+  }
+
+  if (!valid.length) {
+    setStatus("WGS files detected, but none matched the Swordhaven archive format.", "error");
+    return;
+  }
+
+  renderDetectedSaves(valid, "recent");
+  const chosen = valid.slice().sort((a, b) => {
+    if ((b.lastModified || 0) !== (a.lastModified || 0)) return (b.lastModified || 0) - (a.lastModified || 0);
+    return (b.size || 0) - (a.size || 0);
+  })[0];
+  await loadArchive(chosen);
+  selectedFolderLabel.textContent = `Detected WGS archive: ${fileDisplayPath(chosen) || chosen.name}`;
 }
 
 function buildArchiveBuffer(entries) {
@@ -2833,6 +2949,22 @@ autoDetectInput.addEventListener("change", (event) => {
   loadAutoDetect(event.target.files).catch((error) => setStatus(`Auto detect failed: ${error.message}`, "error"));
 });
 
+chooseFilesBtn?.addEventListener("click", () => fileDetectInput?.click());
+
+fileDetectInput?.addEventListener("change", (event) => {
+  const files = Array.from(event.target.files || []);
+  selectedFolderLabel.textContent = files.length ? `Selected: ${files.length} file(s)` : "No files selected.";
+  loadAutoDetect(event.target.files).catch((error) => setStatus(`Auto detect failed: ${error.message}`, "error"));
+});
+
+detectedSavesLoadBtn?.addEventListener("click", () => {
+  const idx = Number(detectedSavesSelect?.value || 0) || 0;
+  const file = detectedArchiveCandidates[idx];
+  if (!file) return;
+  if (modifiedEntries().length && !confirm("You have unsaved edits. Load a different save anyway?")) return;
+  loadArchive(file).catch((error) => setStatus(`Load failed: ${error.message}`, "error"));
+});
+
 viewTabs.addEventListener("click", (event) => {
   const button = event.target.closest("button[data-view]");
   if (!button) return;
@@ -2950,6 +3082,8 @@ resetBtn.addEventListener("click", () => {
   ui.dhCharacter = "";
   ui.infoLogic = "";
   autoDetectInput.value = "";
+  if (fileDetectInput) fileDetectInput.value = "";
+  resetDetectedSaves();
   selectedFolderLabel.textContent = "No folder selected.";
   recordFilter.value = "";
   recordSearch.value = "";

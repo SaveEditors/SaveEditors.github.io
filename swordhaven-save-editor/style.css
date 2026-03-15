@@ -242,6 +242,12 @@ textarea {
   line-height: 1.4;
 }
 
+.detected-saves {
+  width: 100%;
+  display: grid;
+  gap: 10px;
+}
+
 .load-title {
   font-weight: 700;
 }
